@@ -110,7 +110,6 @@ class CVController extends Controller
             abort(403);
         }
         if ($request->has('B_date')) {
-            //see getDateDate in helper 
             $cv->Birth_date = getDateDate($request->input('B_date'));
         }
         $cv->update($request->all());
@@ -125,12 +124,18 @@ class CVController extends Controller
         }
         $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        $html = View::make('invoice.cv')->with('CV', $CV)->with('Records', $Records)->render();
-        /***/
+        
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private', false);
+        header('Content-Encoding: UTF-8');
+        header('Content-type: application/pdf; charset=UTF-8');
+        setlocale(LC_ALL, 'ja_JP.UTF-8');
+        $html = View::make('invoice.cv')
+            ->with('CV', $CV)->with('Records', $Records)->render();
         //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
-        /***/
 
-        $dompdf = PDF::loadHTML($html);
+       $dompdf = PDF::loadHTML($html);
 
         return $dompdf->stream("CV.pdf");
     }

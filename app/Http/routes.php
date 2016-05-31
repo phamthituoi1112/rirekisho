@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('User/{id}', 'UsersController@show')->where('id', '[0-9]+');
 
     //admin only
+
     Route::get('User/search', 'UsersController@search');
     Route::get('User', 'UsersController@index');
 

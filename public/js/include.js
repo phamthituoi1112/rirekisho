@@ -27,9 +27,7 @@ $(document).ready(function () {
         $(document).ajaxComplete(function (status, text) {
 
         });
-        $(document).ajaxError(function (xhr, ajaxOptions) {
-            alert("Error " + ajaxOptions.status + ":" + ajaxOptions.responseText);
-        });
+
         /*******************slide toggle *************************/
         $('[slide-header=true]').next().hide();
         $('[slide-header=true]').first().next().show();

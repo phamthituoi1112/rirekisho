@@ -128,9 +128,8 @@ class UsersController extends Controller
             $name = $timestamp. '-' .$file->getClientOriginalName();
             $user->image = $name;
             $file->move(public_path().'/img/', $name);
-
         }
-        $user->update($request->all());
+        $user->update($request->except('image'));
         return redirect()->back()->withInput($request->all());
     }
 
