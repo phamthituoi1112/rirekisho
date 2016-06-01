@@ -34,10 +34,27 @@ Route::group(['middleware' => ['auth', 'App\Http\Middleware\VisitorMiddleware']]
     Route::get('CV/search', 'CVController@search');
     Route::get('CV', 'CVController@index');
     Route::get('CV/{id}/getPDF', 'CVController@getPDF');
-
 });
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@myLogout');
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+
+Route::get('emails/create', [
+    'as' => 'emails.create',
+    'uses' => 'EmailsController@create',
+]);
+Route::post('emails/send', [
+    'as' => 'emails.send',
+    'uses' => 'EmailsController@send',
+]);
+Route::get('emails/createEmail1', [
+    'as' => 'emails.createEmail1',
+    'uses' => 'EmailsController@createEmail1',
+]);
+Route::post('emails/sendEmail1', [
+    'as' => 'emails.sendEmail1',
+    'uses' => 'EmailsController@sendEmail1',
+]);

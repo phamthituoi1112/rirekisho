@@ -4,7 +4,7 @@
     <!--div  class="page-title"><h3>Tạo CV mới</h3></div-->
 
     <form id="login" class="form-horizontal my-forms "
-          role="form" method="POST" action="/auth/login">
+          role="form" method="POST" action="{{ url('/auth/login') }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <fieldset id="field-box">
