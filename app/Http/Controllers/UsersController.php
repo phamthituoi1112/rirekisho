@@ -150,9 +150,9 @@ class UsersController extends Controller
             $timestamp = str_replace([' ', ':'], '-', Carbon::now()->toDateTimeString());
             $name = $timestamp. '-' .$file->getClientOriginalName();
             $oldfile = public_path('img').$user->image;
-            $oldthumb = public_path('img').'/thumbnail/thumb_'.$user->image;
+            $oldthumb = public_path('img/thumbnail').'thumb_'.$user->image;
             if (File::exists($oldfile)){
-                File::delete($oldthumb);
+                File::exists($oldthumb)&&File::delete($oldthumb);
                 File::delete($oldfile);
             }
             /*resize*/

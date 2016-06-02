@@ -10,36 +10,36 @@ $(document).ready(function () {
                 nav.removeClass("nav_fixed");
             }
         });
-    /*
-        var notify = $('[notification=true]'), timer;
-        $(document).ajaxStart(function () {
+        /*
+         var notify = $('[notification=true]'), timer;
+         $(document).ajaxStart(function () {
 
-            timer && clearTimeout(timer);
-            timer = setTimeout(function () {
-                //notify.html("Loading...");
-                notify.show();
-            }, 10000);
-        });
+         timer && clearTimeout(timer);
+         timer = setTimeout(function () {
+         //notify.html("Loading...");
+         notify.show();
+         }, 10000);
+         });
 
-        $(document).ajaxStop(function () {
-            clearTimeout(timer);
-            notify.hide();
-        });
-        //noinspection JSUnresolvedFunction
-        $(document).ajaxComplete(function (status, text) {
+         $(document).ajaxStop(function () {
+         clearTimeout(timer);
+         notify.hide();
+         });
+         //noinspection JSUnresolvedFunction
+         $(document).ajaxComplete(function (status, text) {
 
-        });
+         });
 
-        /*******************slide toggle *************************/
+         /*******************slide toggle *************************/
         var slideHeader = $('[slide-header=true]');
         slideHeader.next().hide();
         slideHeader.first().next().show();
         slideHeader.click(function () {
-            $content = $(this).next();
-            if (!($content.is(":visible"))) {   //no - its hidden - slide all the other open tabs to hide        
+            var content = $(this).next();
+            if (!(content.is(":visible"))) {   //no - its hidden - slide all the other open tabs to hide 
                 $('[slide-toggle=true]').hide();
                 // open up the content needed         
-                $content.slideToggle(800);
+                content.slideToggle(800);
             }
         });
         /***************Auto-submit*******************************/
@@ -109,31 +109,37 @@ $(document).ready(function () {
 
         function resetTable() {
             //prevent repeat binding or bind only local element
-            $('[name=increase]').unbind("click", Add);
-            $('[name=delete]').unbind("click", Delete);
-            $('[editable=Record]').unbind("click", editCell);
-            $('[name=increase]').bind("click", Add);
-            $('[name=delete]').bind("click", Delete);
-            $('[editable=Record]').bind("click", editCell);
-
+            $('[name=increase]')
+                .unbind("click", Add)
+                .bind("click", Add);
+            $('[name=delete]')
+                .unbind("click", Delete)
+                .bind("click", Delete);
+            $('[editable=Record]')
+                .unbind("click", editCell)
+                .bind("click", editCell);
+            $('[editable=Skill]')
+                .unbind("click", editCell)
+                .bind("click", editCell);
         }
 
         resetTable();
         function editCell() {
             var ID = $(this).closest('tr').attr('id');//record id
+            var url = $(this).attr('editable');
             $(this).find("#cell_" + ID).hide();
             $(this).find("#cell_input_" + ID).show();
             $(this).change(function () {
                 var ID = $(this).closest('tr').attr('id');
                 var cell = $(this).find("#cell_input_" + ID).val();
                 var name = $(this).find("#cell_input_" + ID).attr("name");
-                var cell2 = $(this).children("#cell_" + ID);
+                var cell2 = $(this).children('#cell_' + ID);
                 if (cell.length <= 0) {
                     alert('Enter something.');
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: "/Record/" + ID,
+                        url: "/" + url + "/" + ID,
                         data: name + '=' + cell,
                         cache: false,
                         success: function (html) {
@@ -177,8 +183,8 @@ $(document).ready(function () {
                 alert('Enter something.');
             } else {
                 $.ajax({
-                    type: "GET",
-                    url: "/Record/create",
+                    type: "POST",
+                    url: "/Record",
                     data: dataString,
                     cache: false,
                     success: function (react) {
@@ -229,12 +235,14 @@ $(document).ready(function () {
                     }
                 });
             }
-        };
+        }
+
+        //sort
         $("[data-table=table-resume] .tabs li").on('click', function () {
             var value = $(this).attr("data-keyword");
             var dataSort = $(this).attr("data-sort");
             var dataField = $(this).attr("data-field");
-            dataString = 'keyword=' + value + "&data-sort=" + dataSort + "&data-field=" + dataField;
+            var dataString = 'keyword=' + value + "&data-sort=" + dataSort + "&data-field=" + dataField;
             if (dataSort == "desc") {
                 $(this).attr("data-sort", "asc");
             }
@@ -307,12 +315,14 @@ $(document).ready(function () {
                 });
             }
 
-        };
+        }
+
+        //sort
         $("[data-table=table-user] .tabs li").on('click', function () {
             var value = $(this).attr("data-keyword");
             var dataSort = $(this).attr("data-sort");
             var dataField = $(this).attr("data-field");
-            dataString = 'keyword=' + value + "&data-sort=" + dataSort + "&data-field=" + dataField;
+            var dataString = 'keyword=' + value + "&data-sort=" + dataSort + "&data-field=" + dataField;
             if (dataSort == "desc") {
                 $(this).attr("data-sort", "asc");
             }
@@ -365,13 +375,13 @@ $(document).ready(function () {
                     var data = e.target.result,
                         $img = $('<img />').attr('src', data).fadeIn();
 
-                    $('#dropzone div').html($img);
+                    $('#dropzone').find('div').html($img);
                 };
 
             } else {
                 var ext = file.name.split('.').pop();
 
-                $('#dropzone div').html(ext);
+                $('#dropzone').find('div').html(ext);
             }
         });
 

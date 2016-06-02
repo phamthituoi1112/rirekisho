@@ -17,10 +17,12 @@ class Record extends Model
     {
         return $this->belongsTo('App\CV', 'cv_id');
     }
+    //ở dưới là accessor
     public function getJDateAttribute($value){
         $value = date_create($this->Date);
         return date_format($value, 'Y年m月');;
     }
+    //function
     public function getRole(){
          if ($this->Type == 0)$Role = "School";
             elseif ($this->Type == 1) {

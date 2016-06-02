@@ -22,8 +22,8 @@ Route::group(['middleware' => ['auth']], function () {
     //admin only
     Route::get('User/search', 'UsersController@search');
     Route::get('User', 'UsersController@index');
-
     Route::resource('Record', 'RecordController');
+    Route::resource('Skill', 'SkillController');
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\ApplicantMiddleware']], function () {
     Route::get('CV/{id}/edit2', 'CVController@edit2');
