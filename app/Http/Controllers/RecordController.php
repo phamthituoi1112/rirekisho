@@ -16,7 +16,10 @@ class RecordController extends Controller
     {
 
     }
-
+    /**
+     * @param UpdateRequest $request
+     * @return string
+     */
     public function create(UpdateRequest $request)
     {
         //TODO: Move to store method
@@ -40,8 +43,8 @@ class RecordController extends Controller
 
     public function show($id)
     {
-    }
 
+    }
     public function edit($id, UpdateRequest $request)
     {
 
@@ -49,6 +52,7 @@ class RecordController extends Controller
     public function update($id, UpdateRequest $request)//put
     {
         $record = Record::findOrFail($id);
+
         $cv = $record->CV;
         if (Gate::denies('update-cv', $cv->user_id)) {
              abort(403);
@@ -65,10 +69,11 @@ class RecordController extends Controller
 
     public function destroy($id)
     {
+
         $record = Record::findOrFail($id);
         $cv = $record->CV;
         if (Gate::denies('update-cv', $cv->user_id)) {
-             abort(403);
+            abort(403);
         }
         $type = $record->Type;
         $record->delete();

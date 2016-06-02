@@ -11,11 +11,11 @@ class Record extends Model
         'Content', 'Date', 'Type',
     ];
     protected $hidden = [
-        'cv_id', 'remember_token',
+        'remember_token',
     ];
     public function CV()
     {
-        return $this->belongsTo('App\CV');
+        return $this->belongsTo('App\CV', 'cv_id');
     }
     public function getJDateAttribute($value){
         $value = date_create($this->Date);

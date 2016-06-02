@@ -124,13 +124,14 @@ class CVController extends Controller
         }
         $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        
+        /*
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: private', false);
         header('Content-Encoding: UTF-8');
         header('Content-type: application/pdf; charset=UTF-8');
         setlocale(LC_ALL, 'ja_JP.UTF-8');
+        */
         $html = View::make('invoice.cv')
             ->with('CV', $CV)->with('Records', $Records)->render();
         //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');

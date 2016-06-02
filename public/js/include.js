@@ -10,6 +10,7 @@ $(document).ready(function () {
                 nav.removeClass("nav_fixed");
             }
         });
+    /*
         var notify = $('[notification=true]'), timer;
         $(document).ajaxStart(function () {
 
@@ -24,14 +25,16 @@ $(document).ready(function () {
             clearTimeout(timer);
             notify.hide();
         });
+        //noinspection JSUnresolvedFunction
         $(document).ajaxComplete(function (status, text) {
 
         });
 
         /*******************slide toggle *************************/
-        $('[slide-header=true]').next().hide();
-        $('[slide-header=true]').first().next().show();
-        $('[slide-header=true]').click(function () {
+        var slideHeader = $('[slide-header=true]');
+        slideHeader.next().hide();
+        slideHeader.first().next().show();
+        slideHeader.click(function () {
             $content = $(this).next();
             if (!($content.is(":visible"))) {   //no - its hidden - slide all the other open tabs to hide        
                 $('[slide-toggle=true]').hide();
@@ -87,33 +90,7 @@ $(document).ready(function () {
                 }
             });
         });
-
-        /******************Editable Table********************/
-        $('[editable=Record]').click(function () {
-            var ID = $(this).closest('tr').attr('id');//record id
-            $(this).find("#cell_" + ID).hide();
-            $(this).find("#cell_input_" + ID).show();
-        }).change(function () {
-            var ID = $(this).closest('tr').attr('id');
-            var cell = $(this).find("#cell_input_" + ID).val();
-            var name = $(this).find("#cell_input_" + ID).attr("name");
-            var cell2 = $(this).children("#cell_" + ID);
-            if (cell.length > 0) {
-                $.ajax({
-                    type: "PUT",
-                    url: "/Record/" + ID,
-                    data: name + '=' + cell,
-                    cache: false,
-                    success: function (html) {
-                        cell2.html(cell);
-                    }
-                });
-            }
-            else {
-                alert('Enter something.');
-            }
-
-        });
+        /*****************show CV*************************/
         $(".clickable li a").on('click', function () {
             var name = $(this).attr('name');//show
             $(".bd").hide();
@@ -123,43 +100,82 @@ $(document).ready(function () {
         });
         $(".skippable li a").on('click', function () {
             var name = $(this).attr('href');
-
             $("#p-active").removeAttr('id');
             $(this).children('i').attr("id", "p-active");
         });
 
+        /******************Editable Table********************/
+        // records table
+
+        function resetTable() {
+            //prevent repeat binding or bind only local element
+            $('[name=increase]').unbind("click", Add);
+            $('[name=delete]').unbind("click", Delete);
+            $('[editable=Record]').unbind("click", editCell);
+            $('[name=increase]').bind("click", Add);
+            $('[name=delete]').bind("click", Delete);
+            $('[editable=Record]').bind("click", editCell);
+
+        }
+
+        resetTable();
+        function editCell() {
+            var ID = $(this).closest('tr').attr('id');//record id
+            $(this).find("#cell_" + ID).hide();
+            $(this).find("#cell_input_" + ID).show();
+            $(this).change(function () {
+                var ID = $(this).closest('tr').attr('id');
+                var cell = $(this).find("#cell_input_" + ID).val();
+                var name = $(this).find("#cell_input_" + ID).attr("name");
+                var cell2 = $(this).children("#cell_" + ID);
+                if (cell.length <= 0) {
+                    alert('Enter something.');
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: "/Record/" + ID,
+                        data: name + '=' + cell,
+                        cache: false,
+                        success: function (html) {
+                            cell2.html(cell);
+                        }
+                    });
+                }
+
+            });
+        }
 
         $(document).mouseup(function () {
             $(".editbox").hide();
             $(".jShow").show();
         });
 
-        /******************New row********************/
+        function Add(e) {
+            e.preventDefault();
+            var elements = $(this).closest('tr').next().clone();
+            var dataReact = elements.attr('data-react');
+            elements.appendTo('.editable-table tbody[data-response=' + dataReact + ']');
+            elements.removeAttr("newrow").show();
+            elements.find("[name=save]").bind("click", Save);
+            $(this).unbind("click", Add);
+        }
 
-        $("[name=delete]").bind("click", Delete);
-        $('[name=increase]').bind("click", Add);
-        function Add() {
-            var elements = $('[newrow=true]').clone();
-            elements.appendTo('.editable-table tbody');
-            elements.removeAttr("newrow");
-            elements.show();
-            $("[name=save]").bind("click", Save);
-            $("[name=increase]").unbind("click");
-        };
-
-        function Save() {
+        function Save(e) {
+            e.preventDefault();
             var tr_e = $(this).closest('tr');
             var tdButtons = tr_e.children("td:nth-child(4)");
             var tds = tr_e.children("td");
             var input1 = tds.eq(1).children("input[type=text]");//year
             var input2 = tds.eq(2).children("input[type=text]");//month
-            var input3 = tds.eq(3).children("input[type=text]");
+            var input3 = tds.eq(3).children("input[type=text]");// content
             var dataString = input1.attr('name') + "=" + input1.val()
                 + "&" + input2.attr('name') + "=" + input2.val()
                 + "&" + input3.attr('name') + "=" + input3.val()
                 + "&id=" + tr_e.attr('id') + "&data-react=" + tr_e.attr('data-react');
-            //id - key 
-            if (input3.val().length > 0) {
+            //id - key  
+            if (input3.val().length <= 0) {
+                alert('Enter something.');
+            } else {
                 $.ajax({
                     type: "GET",
                     url: "/Record/create",
@@ -167,18 +183,12 @@ $(document).ready(function () {
                     cache: false,
                     success: function (react) {
                         $(" #" + react).load(location.href + " #" + react + ">*", function () {
-                            $('[name=increase]').bind("click", Add);
-                            $("[name=delete]").bind("click", Delete);
-
+                            resetTable();
                         });
                     }
-
                 });
-            } else {
-                alert('Enter something.');
             }
-            $("[name=delete]").bind("click", Delete);
-        };
+        }
 
         function Delete() {
             var tr_e = $(this).closest('tr'); //tr 
@@ -190,13 +200,13 @@ $(document).ready(function () {
                 cache: false,
                 success: function (react) {
                     $(" #" + react).load(location.href + " #" + react + ">*", function () {
-                        $("[name=delete]").bind("click", Delete);
-                        $('[name=increase]').bind("click", Add);
+                        resetTable();
                     });
 
                 }
             });
-        };
+        }
+
         /**********************************End editable*********************************/
         $('[data-table=table-resume] input#table-search').bind("change blur", Search);
         function Search() {

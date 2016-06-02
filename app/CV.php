@@ -41,7 +41,7 @@ class CV extends Model
     }
     public function Skill()
     {
-        return $this->hasMany('App\Skill', 'cv_id');
+        return $this->hasMany('App\Skill');
     }
     /************************** scope ********************************************/
         public function scopeActive($query)
