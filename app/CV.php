@@ -27,6 +27,7 @@ class CV extends Model
     'Marriage',
     'Request',
     'Career',
+    'Status'
     ];
     
     protected $appends = ['age'];

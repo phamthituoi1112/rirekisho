@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Gate;
+use App\User;
 
 class EmailsController extends Controller
 {
@@ -47,22 +49,23 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-        
-//        $recipients = explode(", ", $request->recipient);
-//        
-//        $this->validate($recipients, [
-//            'recipients[]' => 'email',
-//        ]);
-//        die;
-        
+
+        $recipients = explode(", ", $request->recipient);
+
+        foreach ($recipients as $recipient) {
+            if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+                $errors = 'Recipitents must be email.';
+                return redirect()->back()->withErrors($errors);
+            }
+        }
+
         $this->validate($request, [
-            'recipient' => 'required|email',
             'sender' => 'required',
             'subject' => 'required',
             'content' => 'required',
         ]);
-
-        if ($request->attach) {
+        
+        if (isset($request->attach[0])) {
             //upload file to server
             $files = $request->attach;
             foreach ($files as $file) {
@@ -75,10 +78,10 @@ class EmailsController extends Controller
             }
 
             //send email
-            Mail::send('emails._email', ['content' => $request->content], function($m) use ($request, $attachs) {
+            Mail::send('emails._email', ['content' => $request->content], function($m) use ($request, $recipients, $attachs) {
                 $m->from(config('mail.username'), $request->sender)
                     ->subject($request->subject)
-                    ->to($request->receiver);
+                    ->to($recipients);
 
                 for ($i = 0; $i < sizeOf($attachs); $i++) {
                     $m->attach($attachs[$i]);
@@ -93,9 +96,9 @@ class EmailsController extends Controller
             return redirect()->back();
         }
 
-        Mail::send('emails._email', ['content' => $request->content], function ($m) use ($request) {
+        Mail::send('emails._email', ['content' => $request->content], function ($m) use ($request, $recipients) {
             $m->from(config('mail.username'), $request->sender);
-            $m->to($request->receiver)->subject($request->subject);
+            $m->to($recipients)->subject($request->subject);
         });
 
         return redirect()->back();
@@ -111,7 +114,7 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-        
+
         return view('emails._form_email_1');
     }
 
@@ -120,14 +123,14 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-        
+
         $this->validate($request, [
             'recipient' => 'required',
             'sender' => 'required',
             'date' => 'required',
             'address' => 'required',
         ]);
-        
+
         $data = array(
             'date' => $request->date,
             'address' => $request->address,
@@ -138,4 +141,11 @@ class EmailsController extends Controller
             $m->to($request->receiver)->subject($request->subject);
         });
     }
+
+//    public function getEmailAddress($key)
+//    {
+////        var_dump($request);
+//        $emails = User::where('email', '=', '%a%')->get();
+//        var_dump($emails);
+//    }
 }

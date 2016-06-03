@@ -1,6 +1,32 @@
 @extends('emails.template')
 
 @section('content')
+<!--<script src="{{ url('jquery-textext-master/src/js/textext.core.js')}}" type="text/javascript" charset="utf-8"></script> 
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.autocomplete.js') }}" type="text/javascript" charset="utf-8"></script> 
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.tags.js') }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.ajax.js') }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.prompt.js') }}" type="text/javascript" charset="utf-8"></script> 
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.focus.js') }}" type="text/javascript" charset="utf-8"></script>
+<script src="{{ url('jquery-textext-master/src/js/textext.plugin.arrow.js') }}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $('#recipient').textext({
+        plugins : 'tags prompt focus autocomplete ajax arrow',
+        ajax : {
+            url : '/rirekisho1/public/emails/getEmailAddress',
+            type: 'POST',
+            dataType : 'json',
+            cacheResults : false
+        },
+        autocomplete: {
+            enable: 'true',
+            dropdown : {
+                position : 'above',
+                maxHeight : '60px'
+            }
+        }
+    });
+</script>-->
+
 @if($errors->any())
 <div class="alert alert-danger">
     <ul>
@@ -15,7 +41,7 @@
     
     <div class="form-group">
         <label for="recipient" class="label label-default">Recipient: </label>
-        <input name="recipient" class="form-control" placeholder="Recipient's email address"/>       
+        <textarea id="recipient" name="recipient" class="form-control" rows="1" placeholder="Add one..."></textarea>
     </div>
     
     <div class="form-group">

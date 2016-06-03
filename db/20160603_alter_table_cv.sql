@@ -1,0 +1,1 @@
+ALTER TABLE `cv` ADD `Status` INT NOT NULL DEFAULT '0' AFTER `Active`;

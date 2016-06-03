@@ -139,5 +139,18 @@ class CVController extends Controller
 
         return $dompdf->stream("CV.pdf");
     }
+    
+    public function changeStatus(Request $request)
+    {
+        $CV = CV::findorfail($request->id);
+        $CV->status = $request->status;
+        $CV->update();
+//        
+//        $data = array(
+//            'CV' => $CV,
+//            );
+//        return view('includes._form_status')->with($data);
+        return \Illuminate\Support\Facades\Response::json($CV);
+    }
 
 }

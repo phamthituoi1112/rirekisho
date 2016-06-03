@@ -19,6 +19,9 @@
         <li class="tab select" data-field="updated_at" data-sort="desc" data-keyword="">
           <a>更新日</a>
         </li>
+        <li class="tab select" data-field="status" data-sort="desc" data-keyword="">
+            <a>Status</a>
+        </li>
       </ul>
 
       <div class="search">
@@ -43,7 +46,7 @@
       <th data-field="age"><a>年齢</a></th>
       <th data-field="country"><a></a></th>
       @can('Admin')
-      <th ></th>
+      <th data-field="status"><a>Status</a></th>
       @endcan
     </tr>
   </thead>
