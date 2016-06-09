@@ -48,10 +48,10 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 
-//Route::get('emails/getEmailAddress/{key}', [
-//    'as' => 'emails.getEmailAddress',
-//    'uses' => 'EmailsController@getEmailAddress',
-//]);
+Route::post('emails/getEmailAddress', [
+    'as' => 'emails.getEmailAddress',
+    'uses' => 'EmailsController@getEmailAddress',
+]);
 Route::get('emails/create', [
     'as' => 'emails.create',
     'uses' => 'EmailsController@create',

@@ -49,8 +49,8 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-
-        $recipients = explode(", ", $request->recipient);
+        
+        $recipients = explode(",", $request->recipient);
 
         foreach ($recipients as $recipient) {
             if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
@@ -58,7 +58,7 @@ class EmailsController extends Controller
                 return redirect()->back()->withErrors($errors);
             }
         }
-
+        
         $this->validate($request, [
             'sender' => 'required',
             'subject' => 'required',
@@ -125,27 +125,34 @@ class EmailsController extends Controller
         }
 
         $this->validate($request, [
-            'recipient' => 'required',
+            'recipient' => 'required|email',
             'sender' => 'required',
-            'date' => 'required',
+            'date' => 'required|after:now',
+            'time' => 'required',
             'address' => 'required',
         ]);
 
         $data = array(
             'date' => $request->date,
+            'time' => $request->time,
             'address' => $request->address,
         );
 
         Mail::send('emails._email_1', $data, function ($m) use ($request) {
             $m->from(config('mail.username'), $request->sender);
-            $m->to($request->receiver)->subject($request->subject);
+            $m->to($request->recipient)->subject($request->subject);
         });
     }
 
-//    public function getEmailAddress($key)
-//    {
-////        var_dump($request);
-//        $emails = User::where('email', '=', '%a%')->get();
-//        var_dump($emails);
-//    }
+    public function getEmailAddress(Request $request)
+    {
+        $key = $request->term;
+        
+        $emails = User::select('name', 'email')
+            ->where('email', 'like' , '%'.$key.'%')
+            ->orWhere('name', 'like', '%'.$key.'%')
+            ->get();
+        
+        return Response::json($emails);
+    }
 }
