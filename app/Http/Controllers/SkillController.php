@@ -13,22 +13,32 @@ use App\Http\Requests\UpdateRequest;
 
 class SkillController extends Controller
 {
-    
-    public function store(Request $request)
+
+    /**
+     * Store on create
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function store(Request $request) //post
     {
         $CV = CV::findOrFail($request->input('id'));
         if (Gate::denies('update-cv', $CV->user_id)) {
             abort(403);
         }
         $type = str_split_unicode($request->input('data-react'),"_");//"2_x"
-        $skill = new Skill();
+        $skill = new Skill($request->all());
         $skill->skill_type = $type[2];
-        $skill->update($request->all());
         $CV->Skill()->save($skill);
-        return "2_".$skill->Type;
+        return "2_".$skill->skill_type;
     }
-
-    public function update(Request $request, $id)
+    /**
+     * Update on edit
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function update(Request $request, $id) //put
     {
         $skill = Skill::findOrFail($id);
         $cv = $skill->CV;
@@ -47,7 +57,14 @@ class SkillController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $skill = Skill::findOrFail($id);
+        $cv = $skill->CV;
+        if (Gate::denies('update-cv', $cv->user_id)) {
+            abort(403);
+        }
+        $type = $skill->skill_type;
+        $skill->delete();
+        return "2_" .$type;
     }
     
     //unused methoods

@@ -17,6 +17,7 @@ class CVController extends Controller
 
     public function index(Request $request)
     {
+        //TODO: sửa view
         $CVs = CV::all();
         $CVs = CV::paginate(10);
 
@@ -102,7 +103,7 @@ class CVController extends Controller
         $skills = $cv->Skill;
         $Records = $cv->Record;
         $Records = $Records->sortBy("Date");
-        return View::make('xCV.CVcreate')->with('CV', $cv)->with('Records', $Records) ->with('skills', $skills);
+        return View::make('xCV.CVcreate')->with('CV', $cv)->with('Records', $Records)->with('skills', $skills);
     }
 
     public function update($id, UpdateRequest $request)//PUT

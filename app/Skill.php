@@ -51,4 +51,30 @@ class Skill extends Model
         }
         return $Role;
     }
+    public function getType($str)
+    {
+
+        switch ($str) {
+            case  "Language":
+                $Role = 0;
+                break;
+            case "ProgLang":
+                $Role = 1 ;
+                break;
+            case "VerMan":
+                $Role = 2;
+                break;
+            case "Framework":
+                $Role = 3;
+                break;
+            case "Database":
+                $Role = 4;
+                break;
+            default:
+                $Role = x;
+                break;
+        }
+        return $Role;
+    }
+
 }

@@ -7,7 +7,6 @@
             @else
                 <span class="dropzone-text">Upload photos</span>
             @endif
-
         </div>
         <input type="file" accept="image/png,image/jpeg" name="image"/>
     </div>

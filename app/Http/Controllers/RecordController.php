@@ -24,7 +24,6 @@ class RecordController extends Controller
         $record->Date = $request->input('Year') . '-' . $request->input('Month') . '-01';
         $record->Content = $request->input('Content');
         $CV->Record()->save($record);
-
         return "1_" . $record->Type;
     }
 

@@ -56,9 +56,9 @@
                     @foreach ($users as $row)
                         <tr class="data">
                             <td class="image">
-                                <div style="height: 100px; width: 100px; display: block;">
+                                <div style=" position: relative;height: 100px;width: 100px;">
                                 @if($row->image!="")
-                                    <img tyle="height: 100px; width: 100px;" src=<?php echo "/img/thumbnail/thumb_" . $row->image;?> >
+                                    <img style="height: 100px; width: 100px;" src=<?php echo "/img/thumbnail/thumb_" . $row->image;?> >
                                 @else
                                     <!--img style="height: 100px; width: 100px;"  src= "/img/no_image.gif"-->
                                         <span class="dropzone-text">No image</span>

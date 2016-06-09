@@ -7,9 +7,15 @@
     @else
     @foreach ($users as $row)
     <tr class="data">
-      <td class="image"><a href=""><img
-        src="http://i.forbesimg.com/media/lists/people/bill-gates_100x100.jpg"
-        alt=""></a>
+      <td class="image">
+          <div style=" position: relative;height: 100px;width: 100px;">
+              @if($row->image!="")
+                  <img style="height: 100px; width: 100px;" src=<?php echo "/img/thumbnail/thumb_" . $row->image;?> >
+              @else
+              <!--img style="height: 100px; width: 100px;"  src= "/img/no_image.gif"-->
+                  <span class="dropzone-text">No image</span>
+              @endif
+          </div>
       </td>
       <td class="rank">{{ $row->id }}</td>
       <td class="name"><a href="{{url('User',$row->id)}} ">{{ $row->name }} </a> </td>

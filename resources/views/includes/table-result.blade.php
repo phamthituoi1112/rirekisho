@@ -10,9 +10,8 @@
     ?>
 @foreach ($CVx as $CV)
 <tr class="data">
-  <td class="image"><a href=""><img
-    src="http://i.forbesimg.com/media/lists/people/bill-gates_100x100.jpg"
-    alt=""></a>
+  <td class="image">
+      <span class="dropzone-text">No image</span>
   </td>
   <td class="rank">{{ $CV->id }}</td>
   <td class="name"><a href="{{url('CV',$CV->id)}} ">{{ $CV->Name }} </a> </td>

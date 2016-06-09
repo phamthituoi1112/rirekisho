@@ -73,6 +73,12 @@ div.content:hover,div.content:active,div.content:focus{
     font-size: 17px;
     padding-bottom: 7px;
 }
+.error-text{
+    color: darkred;
+    font-size: 12px;
+    text-transform: capitalize;
+    font-style: italic;
+}
 .tbFooter{
     background: #D3DCE3;
     border-top: 0;
