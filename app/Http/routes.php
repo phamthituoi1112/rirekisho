@@ -25,11 +25,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('User', 'UsersController@index');
     
     Route::post('CV/changeStatus',[
-       'as' => 'CV.changeStatus',
+        'as' => 'CV.changeStatus',
         'uses' => 'CVController@changeStatus',
     ]);
 
     Route::resource('Record', 'RecordController');
+    Route::resource('positions', 'PositionsController');
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\ApplicantMiddleware']], function () {
     Route::get('CV/{id}/edit2', 'CVController@edit2');

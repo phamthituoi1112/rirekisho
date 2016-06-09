@@ -8,6 +8,7 @@ use Gate;
 use PDF;
 use App\CV;
 use App\Record;
+use App\Positions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateRequest;
 use Nicolaslopezj\Searchable\SearchableTrait;
@@ -99,7 +100,10 @@ class CVController extends Controller
         }
         $Records = $cv->Record;
         $Records = $Records->sortBy("Date");
-        return View::make('xCV.CVcreate')->with('CV', $cv)->with('Records', $Records);
+        
+        $positions = Positions::where('active', '=', '1')->get();
+        return View::make('xCV.CVcreate')->with('CV', $cv)->with('Records', $Records)
+               ->withPositions($positions);
     }
 
     public function update($id, UpdateRequest $request)//PUT

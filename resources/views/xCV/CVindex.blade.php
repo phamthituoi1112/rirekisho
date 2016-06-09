@@ -22,6 +22,7 @@
         <li class="tab select" data-field="status" data-sort="desc" data-keyword="">
             <a>Status</a>
         </li>
+        
       </ul>
 
       <div class="search">
@@ -41,12 +42,14 @@
       <th></th>
       <th data-field=""><a></a></th>
       <th data-field="name" style="width: 20%;"><a>名前</a></th>
-      <th data-field="kana" style="width: 25%;"><a>名前</a></th>
+      <th data-field="kana" style="width: 15%;"><a>名前</a></th>
       <th data-field="worth" style="width: 15%;"><a>性別</a></th>
-      <th data-field="age"><a>年齢</a></th>
+      <th data-field="age" style="width: 10%;"><a>年齢</a></th>
       <th data-field="country"><a></a></th>
       @can('Admin')
-      <th data-field="status"><a>Status</a></th>
+      <th data-field="status" style="width: 15%;"><a>Status</a></th>
+      <th data-field="apply_to" style="width: 15%;"><a>Apply to</a></th>
+      <th></th>
       @endcan
     </tr>
   </thead>

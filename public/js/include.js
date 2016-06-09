@@ -53,13 +53,13 @@ $(document).ready(function () {
             var sucess_status = $("#s_" + name + "_" + key);
             var value = $(this).val();
             var dataString = name + '=' + value;
-
+            console.log(dataString);
             if (value.length > 0) {
                 $.ajax({
                     //type: "GET",
                     //url: "/CV/"+key+"/edit",
                     type: "PUT",
-                    url: "/CV/" + key,
+                    url: "/rirekisho1/public/CV/" + key,
                     data: dataString,
                     cache: false,
                     success: function (html) {

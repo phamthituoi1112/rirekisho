@@ -24,6 +24,7 @@ $CVx = $CVs->reject(function ($item) {
     <td></td>
     @can('Admin')
     <td>@include('includes._form_status',['CV' => $CV])</td>
+    <td>{{ $CV->position->name }}</td>
     <td><a href="{{url('CV',[$CV->id,'edit'])}}">Sửa</a></td>
     @endcan
 </tr>

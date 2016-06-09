@@ -27,7 +27,8 @@ class CV extends Model
     'Marriage',
     'Request',
     'Career',
-    'Status'
+    'Status',
+    'apply_to',
     ];
     
     protected $appends = ['age'];
@@ -43,6 +44,10 @@ class CV extends Model
     public function Skill()
     {
         return $this->hasMany('App\Skill', 'cv_id');
+    }
+    public function Position()
+    {
+        return $this->belongsTo('App\Positions', 'apply_to');
     }
     /************************** scope ********************************************/
         public function scopeActive($query)

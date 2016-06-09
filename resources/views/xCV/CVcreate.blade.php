@@ -103,8 +103,32 @@
                             </div>
                         </div>
                     </div>
-
                 </li>
+                
+                <li>
+                    <div class="float_left" style="width: 45%;">
+                        <label class="label" for="name">Vị trí ứng tuyển</label>
+                        <div class="select">
+                            <label class="icon-left" for="text">
+                                <i class="fa fa-edit"></i>
+                            </label>
+                            <select id="{{$key}}" editable="Rirekisho" style="width: 50%;" name="apply_to"
+                                   class="form-control float_left">
+                                @foreach($positions as $position)
+                                <option value="{{ $position->id }}" 
+                                        @if($CV->apply_to == $position->id)
+                                            selected="select"
+                                        @endif
+                                        >{{ $position->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="success-status float_left" id="s_B_date_{{$key}}" style="display:none;">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
                 <li class="">
                     <div class=" float_left" style="width: 100%;">
                         <label class="label" for="name">Địa chỉ</label>
