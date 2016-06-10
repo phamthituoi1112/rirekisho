@@ -31,7 +31,7 @@
 
     <div class="form-group">
         <label for="content" class="label label-default">Content: </label>
-        <textarea name="content" class="form-control"></textarea>
+        <textarea id="content" name="content" class="form-control"></textarea>
     </div>
 
     <div class="form-group">
@@ -43,40 +43,4 @@
         <button name="sendMail" class="btn btn-primary">Send mail</button>
     </div>
 </form>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="{{ url('tag-it-master/js/tag-it.js') }}" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
-<link href="{{ url('tag-it-master/css/jquery.tagit.css') }}" rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-$(document).ready(function () {
-    $("#recipient").tagit({
-        singleField: true,
-        singleFieldNode: $('#recipient'),
-        allowSpaces: false,
-        removeConfirmation: true,
-        placeholderText: "Recipients",
-        
-        tagSource: function (request, response) {
-            $.ajax({
-                url: "/rirekisho1/public/emails/getEmailAddress",
-                data: {term: request.term},
-                dataType: "json",
-                type: 'POST',
-                success: function (data) {
-                    response($.map(data, function (item) {
-                        return {
-                            label: item.name + ': ' + item.email,
-                            value: item.email
-                        };
-                    }));
-                    
-                }
-            });
-        }});
-    });
-</script>
-
 @endsection

@@ -22,13 +22,85 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/my-forms.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/header.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/custom.css') }}"/>
+    
+    <!--input type= date time-->
+    <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+    <script>
+        webshims.setOptions('forms-ext', {types: 'date'});
+        webshims.polyfill('forms forms-ext');
+    </script>
+    
+    <!--tagIt-->
+    <script src="{{ url('tag-it-master/js/tag-it.js') }}" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link href="{{ url('tag-it-master/css/jquery.tagit.css') }}" rel="stylesheet" type="text/css">
+
+    <script src="{{ url('js/emails_tagIt.js') }}" type="text/javascript"></script>
+
+    <!--tinyMCE-->
+    <script type="text/javascript" src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+    <script src="{{ url('js/emails_tiniMCE.js') }}"  type="text/javascript"></script>
 </head>
 <body>
 
-<header>
-    
+<div class="header">
+    <div class="top">
+        <div class="toptext">
+            <a href="">
+				<span style="color: #8A2BE2;" class="">
+				</span>
+                Rirekisho </a>
+        </div>
 
-</header>
+    </div>
+    <div class="clr"></div>
+    <div class="navbar"><!-- jquery nav bar-->
+        <div class="nav_area">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="float_right nav navbar-nav">
+                        <li><a href="{{url('CV')}}">Trang chủ</a></li>
+                        @can('Admin')
+                            <li><a href="{{url('User')}}">User</a></li>
+                            <li><a href="{{url('positions')}}">Positions</a></li>
+                            <li><a href="{{url('emails/create')}}">Send email</a></li>
+                        @endcan
+                        @can('Applicant')
+                        @endcan
+                        @can('Visitor')
+                            <li class="active"><a href="{{url('CV')}}">Danh sách CV<span
+                                            class="sr-only">(current)</span></a></li>
+                        @endcan
+                        <li><a href="{{url('about')}}">About</a></li>
+                        <li><a href="{{url('User',[Auth::User()->id])}}">Cài đặt</a></li>
+                        <li><a href="{{url('auth/logout')}}">Đăng xuất</a></li>
+                        <li><a> Hello {{Auth::User()->name}}</a></li>
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+
+
+            </div><!-- /.container-fluid -->
+        </div>
+        <div class="clr"></div>
+        <div class="warning-box" style=""> <!-- jquery nav bar-->
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <div notification="true" class="">
+
+                    <span>There must be some error while loading this page. Please <a href="." class="normal_color">refresh! </a>
+                        </span>
+                    </div>
+                </div><!-- /.navbar-collapse -->
+                </nav>
+
+            </div>
+
+        </div>
+    </div>
+    <!--hr /-->
+</div>
+    
 <br>
 <br>
 <div class="container">

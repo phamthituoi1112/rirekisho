@@ -60,9 +60,9 @@ Route::post('emails/send', [
     'as' => 'emails.send',
     'uses' => 'EmailsController@send',
 ]);
-Route::get('emails/createEmail1', [
-    'as' => 'emails.createEmail1',
-    'uses' => 'EmailsController@createEmail1',
+Route::post('emails/createFormEmail', [
+    'as' => 'emails.createFormEmail',
+    'uses' => 'EmailsController@createFormEmail',
 ]);
 Route::post('emails/sendEmail1', [
     'as' => 'emails.sendEmail1',

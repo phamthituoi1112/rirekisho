@@ -23,8 +23,19 @@ $CVx = $CVs->reject(function ($item) {
     <td data-field="age">{{ $CV->Age }} 歳</td>
     <td></td>
     @can('Admin')
-    <td>@include('includes._form_status',['CV' => $CV])</td>
-    <td>{{ $CV->position->name }}</td>
+    <td>
+        <div class="status" id="status{{ $CV->id }}">
+            @include('includes._form_status',['CV' => $CV])
+            <input type="hidden" value="{{ $CV->id }}" id="id"/>
+            <input type="hidden" value="{{ $CV->User->email }}" id="email"/>
+            <button id="btn_send_email{{ $CV->id }}" class="btn btn-primary btn-send-email" value="{{ $CV->Status }}">Send Email {{ $CV->Status }}</button>
+        </div>
+    </td>
+    <td>
+        <div class="position" id="position{{ $CV->id }}">
+            {{ $CV->position->name }}
+        </div>
+    </td>
     <td><a href="{{url('CV',[$CV->id,'edit'])}}">Sửa</a></td>
     @endcan
 </tr>
@@ -34,42 +45,15 @@ $CVx = $CVs->reject(function ($item) {
 </tr>
 @endif
 
+<div class="modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content">
+        </div>
+    </div>
+</div>
+
 <meta name="_token" content="{!! csrf_token() !!}" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-$(document).ready(function () {
-    $('form.status').change(function () {
-        var result = confirm("Want to change?");
-        if (result)
-        {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-
-                }
-            })
-
-            var data = {
-                id: $(this).children('#id').val(),
-                status: $(this).children('select.status').val()
-            };
-            $.ajax({
-                type: 'POST',
-                url: 'CV/changeStatus',
-                data: data,
-                dataType: 'json',
-                success: function (data) {
-                    alert('Success');
-//                    console.log(data);
-//                    $(this).replaceWith(data);
-//                    $(this).children('#CV_status').val(data.status);
-                },
-            });
-        }
-        else
-        {
-            $(this).children('select.status').val($(this).children('#CV_status').val());
-        }
-    });
-});
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="{{ asset('js/CV_changeStatus.js') }}"></script>
+<script src="{{ asset('js/email_send.js') }}"></script>

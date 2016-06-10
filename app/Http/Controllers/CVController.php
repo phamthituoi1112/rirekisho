@@ -149,11 +149,7 @@ class CVController extends Controller
         $CV = CV::findorfail($request->id);
         $CV->status = $request->status;
         $CV->update();
-//        
-//        $data = array(
-//            'CV' => $CV,
-//            );
-//        return view('includes._form_status')->with($data);
+
         return \Illuminate\Support\Facades\Response::json($CV);
     }
 

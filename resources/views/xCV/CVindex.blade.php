@@ -19,10 +19,12 @@
         <li class="tab select" data-field="updated_at" data-sort="desc" data-keyword="">
           <a>更新日</a>
         </li>
-        <li class="tab select" data-field="status" data-sort="desc" data-keyword="">
+        <li class="tab select" data-field="Status" data-sort="desc" data-keyword="">
             <a>Status</a>
         </li>
-        
+        <li class="tab select" data-field="apply_to" data-sort="desc" data-keyword="">
+            <a>Apply to</a>
+        </li>
       </ul>
 
       <div class="search">

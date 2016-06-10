@@ -69,6 +69,7 @@ class PositionsController extends Controller
 
         $position->save();
 
+        Session::flash('flash_message', 'Position has been saved.');
         return Response::json($position);
     }
 
@@ -129,6 +130,7 @@ class PositionsController extends Controller
 
         $position->update();
 
+        Session::flash('flash_message', 'Position has been updated.');
         return Response::json($position);
     }
 
@@ -148,6 +150,7 @@ class PositionsController extends Controller
         
         $position->delete();
         
+        Session::flash('flash_message', 'Position has been deleted.');
         return Response::json($position);
     }
 }

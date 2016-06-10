@@ -1,6 +1,3 @@
-@extends('emails.template')
-
-@section('content')
 @if($errors->any())
 <ul class="danger">
     @foreach($errors->all() as $error)
@@ -20,7 +17,7 @@
 
                 <div class="form-group">
                     <label for="recipient" class="label label-default">Recipient: </label>
-                    <input name="recipient" class="form-control" type="email" placeholder="Recipient's email address"/>       
+                    <input name="recipient" class="form-control" type="email" placeholder="Recipient's email address" value="{{ $email }}"/>       
                 </div>
 
                 <div class="form-group">
@@ -35,9 +32,9 @@
                 <hr>
                 Xin hen ban<br>
                 Ngay<br>
-                <input type="date" class="form-control" name="date"/><br>
+                <input type="date" class="form-control" name="date" id="date" data-date='{"startView": 2, "openOnMouseFocus": true}'/><br>
                 Vao luc<br>
-                <input type="time" class="form-control" name="time"/><br>
+                <input type="time" class="form-control" name="time" id="time"/><br>
                 Tai<br>
                 <input class="form-control" name="address"/><br>
                 Len abcxyz<br/>
@@ -46,4 +43,3 @@
             </form>
         </div>
     </div>
-@endsection

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Gate;
+use Session;
 use App\User;
 
 class EmailsController extends Controller
@@ -93,6 +94,7 @@ class EmailsController extends Controller
                 Storage::disk('local')->delete($filenames[$i]);
             }
 
+            Session::flash('flash_message', 'Email has been sent.');
             return redirect()->back();
         }
 
@@ -101,23 +103,38 @@ class EmailsController extends Controller
             $m->to($recipients)->subject($request->subject);
         });
 
+        Session::flash('flash_message', 'Email has been sent.');
         return redirect()->back();
     }
 
     /**
      * Show the form for creating a new email type 1.
      *
-     * @return \Illuminate\Http\Response
+     * @return view
      */
-    public function createEmail1()
+    public function createFormEmail(Request $request)
     {
         if (Gate::denies('Admin')) {
             abort(403);
         }
 
-        return view('emails._form_email_1');
+        if($request->type)
+        {
+            $email = $request->email;
+            
+            $data = array('email' => $email);
+            
+            return view('emails._form_email_1')->with($data);
+        }
+        
+        return 1;
     }
 
+    /**
+     * send email type 1.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function sendEmail1(Request $request)
     {
         if (Gate::denies('Admin')) {
@@ -142,8 +159,15 @@ class EmailsController extends Controller
             $m->from(config('mail.username'), $request->sender);
             $m->to($request->recipient)->subject($request->subject);
         });
+        
+        Session::flash('flash_message', 'Email has been sent.');
     }
 
+    /**
+     * get Email address for ajax.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getEmailAddress(Request $request)
     {
         $key = $request->term;

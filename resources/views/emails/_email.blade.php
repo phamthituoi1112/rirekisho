@@ -1,5 +1,5 @@
 Header
 <br>
-{{ $content }}
+<?Php echo $content; ?>
 <br>
 Footer

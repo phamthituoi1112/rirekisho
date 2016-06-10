@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    
+    var url = '/rirekisho1/public/';
+    
         /*************************fix navbar*************************************/
         var nav = $('.navbar');
         var num = $('body').offset().top;
@@ -59,7 +62,7 @@ $(document).ready(function () {
                     //type: "GET",
                     //url: "/CV/"+key+"/edit",
                     type: "PUT",
-                    url: "/rirekisho1/public/CV/" + key,
+                    url: url + "/CV/" + key,
                     data: dataString,
                     cache: false,
                     success: function (html) {
@@ -79,7 +82,7 @@ $(document).ready(function () {
             var dataString = name + '=' + this.value;
             $.ajax({
                 type: "PUT",
-                url: "/CV/" + key,
+                url: url + "/CV/" + key,
                 data: dataString,
                 cache: false,
                 success: function (html) {
@@ -101,7 +104,7 @@ $(document).ready(function () {
             if (cell.length > 0) {
                 $.ajax({
                     type: "PUT",
-                    url: "/Record/" + ID,
+                    url: url + "/Record/" + ID,
                     data: name + '=' + cell,
                     cache: false,
                     success: function (html) {
@@ -162,7 +165,7 @@ $(document).ready(function () {
             if (input3.val().length > 0) {
                 $.ajax({
                     type: "GET",
-                    url: "/Record/create",
+                    url: url + "/Record/create",
                     data: dataString,
                     cache: false,
                     success: function (react) {
@@ -185,7 +188,7 @@ $(document).ready(function () {
             var ID = tr_e.attr('id');//record id
             $.ajax({
                 type: "DELETE",
-                url: "/Record/" + ID,
+                url: url + "/Record/" + ID,
                 data: "",
                 cache: false,
                 success: function (react) {
@@ -207,7 +210,7 @@ $(document).ready(function () {
             if (value.length >= 0) {
                 $.ajax({
                     type: "GET",
-                    url: "/CV/search",
+                    url: url + "/CV/search",
                     data: dataString,
                     cache: false,
                     success: function (html) {
@@ -233,7 +236,7 @@ $(document).ready(function () {
 
                 $.ajax({
                     type: "GET",
-                    url: "/CV/search",
+                    url: url + "/CV/search",
                     data: dataString,
                     cache: false,
                     success: function (html) {
@@ -284,7 +287,7 @@ $(document).ready(function () {
             if (value.length >= 0) {
                 $.ajax({
                     type: "GET",
-                    url: "/User/search",
+                    url: url + "/User/search",
                     data: dataString,
                     cache: false,
                     success: function (html) {
@@ -311,7 +314,7 @@ $(document).ready(function () {
 
                 $.ajax({
                     type: "GET",
-                    url: "/User/search",
+                    url: url + "/User/search",
                     data: dataString,
                     cache: false,
                     success: function (html) {
