@@ -41,14 +41,14 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), User::$login_rules);
 
         if ($validator->fails()) {
-            return redirect('auth/login')->withErrors($validator)->withInput($request->except(['password'])); 
+            return redirect('auth/login')->withErrors($validator)->withInput($request->except(['password']))->with(['flash_messages'=>'danh nhap that bai']); 
         } else {
             $userdata = array('email' => $request->input('email'), 'password' => $request->input('password'));
             if (Auth::attempt($userdata)) {
-                return redirect('/');//->withInput($userdata);
+                return redirect('/')->with(['flash_messages'=>'Đăng nhập Thành công']);//->withInput($userdata);
             }
 
-            return redirect('auth/login')->withInput($request->except(['password']));
+            return redirect('auth/login')->withInput($request->except(['password']))->with(['flash_messages'=>'Bạn nhập sai mật khẩu hoặc password.Hãy nhập lại']);
         }
     }
 

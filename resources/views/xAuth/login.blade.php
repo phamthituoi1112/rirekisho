@@ -1,8 +1,15 @@
 @extends('xAuth.begin')
+
 <title>Đăng nhập</title>
 @section('content')
     <!--div  class="page-title"><h3>Tạo CV mới</h3></div-->
-
+<div class="col-lg-12">
+                        @if(Session::has('flash_messages'))
+                        <div class="alert alert-danger">
+                            {!! Session::get('flash_messages') !!}
+                        </div>
+                        @endif
+</div>
     <form id="login" class="form-horizontal my-forms "
           role="form" method="POST" action="/auth/login">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

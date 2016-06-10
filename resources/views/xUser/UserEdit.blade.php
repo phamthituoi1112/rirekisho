@@ -2,6 +2,7 @@
 <title>Chỉnh sửa thông tin người dùng</title>
 <!--link rel="stylesheet" type="text/css" href="{{ URL::asset('css/uploadCV.css') }}"/-->
 @section('content')
+
     <?php $key = $user->id;?>
     <form action="/User/{{$key}}" method="post" class="my-forms" id="profile-forms" enctype="multipart/form-data">
         <fieldset id="field-box">

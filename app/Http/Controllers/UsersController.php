@@ -130,7 +130,7 @@ class UsersController extends Controller
             $file->move(public_path().'/img/', $name);
         }
         $user->update($request->except('image'));
-        return redirect()->back()->withInput($request->all());
+        return redirect()->back()->withInput($request->all())->with(['flash_messages'=>'Update thành công']);;
     }
 
     /**

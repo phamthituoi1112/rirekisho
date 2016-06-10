@@ -44,7 +44,13 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse">
                     <div notification="true" class="">
-
+                        <div class="col-lg-12">
+                        @if(Session::has('flash_messages'))
+                         <div class="alert alert-success">
+                            {!! Session::get('flash_messages') !!}
+                            </div>
+                        @endif
+                        </div>
                     <span>There must be some error while loading this page. Please <a href="." class="normal_color">refresh! </a>
                         </span>
                     </div>
