@@ -51,6 +51,7 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
+        $errors = array();
         //get email address
         $recipients = explode(",", $request->recipient);
 
@@ -61,18 +62,30 @@ class EmailsController extends Controller
                         ->with('users')->first();
                 //yes
                 if ($group) {
-                    foreach ($group->users as $user) {
-                        //add email address
-                        $recipients[] = $user->email;
+                    if ($group->users->count() == 0) {
+                        $errors[] = 'No one in ' . $group->name;
+                    } else {
+                        foreach ($group->users as $user) {
+                            //add email address
+                            $recipients[] = $user->email;
+                        }
                     }
                     //remove group's name
                     $key = array_search($recipient, $recipients);
                     unset($recipients[$key]);
                 } else { //NO!
-                    $errors = 'Recipitents must be email.';
+                    $errors[] = 'Recipitent must be email.';
                     return redirect()->back()->withErrors($errors);
                 }
             }
+        }
+        //remove duplicate
+        $recipients = array_unique($recipients);
+
+        //check - is there any email address?
+        if (sizeOf($recipients) == 0) {
+            $errors[] = 'No recipient!';
+            return redirect()->back()->withErrors($errors);
         }//end get email address
 
         $this->validate($request, [
@@ -81,7 +94,7 @@ class EmailsController extends Controller
             'content' => 'required',
         ]);
 
-        if (isset($request->attach[0])) {//if attach file
+        if (isset($request->attach[0])) {//if have attach file
             //upload file to server
             $files = $request->attach;
             foreach ($files as $file) {
@@ -110,7 +123,12 @@ class EmailsController extends Controller
             }
 
             Session::flash('flash_message', 'Email has been sent.');
-            return redirect()->back();
+            
+            if($errors) {
+                return redirect()->back()->withErrors($errors);
+            } else {
+                return redirect()->back();
+            }
         }
         //if no attach file
         Mail::send('emails._email', ['content' => $request->content], function ($m) use ($request, $recipients) {
@@ -119,7 +137,13 @@ class EmailsController extends Controller
         });
 
         Session::flash('flash_message', 'Email has been sent.');
-        return redirect()->back();
+        
+        if($errors){
+            return redirect()->back()->withErrors($errors);
+        } else {
+            return redirect()->back();
+        }
+        
     }
 
     /**
