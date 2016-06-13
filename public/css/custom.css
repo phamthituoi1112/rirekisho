@@ -35,7 +35,7 @@
   margin: auto;
   z-index: 2;
   /********/
-  padding: 10 20px;
+  padding: 10px 20px;
   top: 90px;
   min-width: 300px;
 }
@@ -109,6 +109,7 @@ div.content:hover,div.content:active,div.content:focus{
 }
 
 .profile .profile-picture{
+    position: relative;height: 200px;width: 200px;margin: auto;
 }
 .profile .profile-overview{
 

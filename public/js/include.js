@@ -141,9 +141,26 @@ $(document).ready(function () {
                 },
                 messages: {
                     Year: {
-                        range: "Năm phải lớn hơn 1950 và nhỏ hơn số năm hiện tại "
+                        range: jQuery.validator.format("Năm phải lớn hơn {0} và nhỏ hơn số năm hiện tại "),
+                        required: "Bạn chưa điền đủ thông tin cho trường năm"
+                    },
+                    Content : {
+                        required: "Bạn chưa điền đủ thông tin cho các trường  "
+                    },
+                    Month: {
+                        required: "Bạn chưa điền đủ thông tin cho trường tháng "
+                    },
+                    name : {
+                        required: "Bạn chưa điền đủ thông tin cho trường tên kĩ năng ",
+                    },
+                    study_time : {
+                        required: "Bạn chưa điền đủ thông tin cho trường thời gian học  ",
+                    },
+                    work_time : {
+                        required: "Bạn chưa điền đủ thông tin cho trường thời gian làm việc ",
                     }
                 },
+                errorElement: "div",
                 errorPlacement: function (error, element) {
                     var react = element.closest('tbody').attr('data-response');
                     if (element.attr("name") == "Year" || element.attr("name") == "Month" || element.attr("name") == "Content" || element.attr("name") == "study_time" || element.attr("name") == "work_time" || element.attr("name") == "name") {
@@ -175,8 +192,12 @@ $(document).ready(function () {
         });
         /******************Editable Table********************/
         // records table
+        $(document).mouseup(function () {
+            $(".editbox").hide();
+            $(".jShow").show();
+        });
 
-        function resetTable() {
+    function resetTable() {
             //prevent repeat binding or bind only local element
             $('[name=increase]')
                 .unbind("click", Add)
@@ -200,6 +221,7 @@ $(document).ready(function () {
             cell.show();
             $(this).change(function () {
                 if (validator.element(cell)) {
+
                     $.ajax({
                         type: "PUT",
                         url: "/" + url + "/" + ID,
@@ -207,21 +229,20 @@ $(document).ready(function () {
                         cache: false,
                         success: function (html) {
                             cellContent.html(cell.val());
+                            cell.hide();
+                            cellContent.show();
+
                         }
                     });
-                } else {
-                    cell.val(old);
                 }
+
             });
+
         }
 
-        $(document).mouseup(function () {
-            $(".editbox").hide();
-            $(".jShow").show();
-        });
 
         function Add(e) {
-            e.preventDefault();
+
             var elements = $(this).closest('tr').next().clone();
             var dataReact = elements.attr('data-react');
             elements.appendTo('.editable-table tbody[data-response=' + dataReact + ']');
@@ -231,7 +252,7 @@ $(document).ready(function () {
         }
 
         function Save(e) {
-            e.preventDefault();
+
             var tr_e = $(this).closest('tr');
             var url = tr_e.attr('newrow');
             var tds = tr_e.children("td");
@@ -241,7 +262,7 @@ $(document).ready(function () {
                 + "&id=" + tr_e.attr('id') + "&data-react=" + tr_e.attr('data-react');
             //id - cv
             var t = 1;
-            var x = inputs.each(function () {
+            inputs.each(function () {
                 if (validator.element($(this)) == false) t = false;
             });
             if (t) {

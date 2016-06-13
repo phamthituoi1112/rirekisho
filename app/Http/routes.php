@@ -16,17 +16,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('CV/{id}', 'CVController@show')->where('id', '[0-9]+');
     Route::get('CV/{id}/view', 'CVController@show2');
     Route::get('Record/index/{type}', 'RecordController@index');
-    Route::put('User/{id}', 'UsersController@update');
-    Route::get('User/{id}', 'UsersController@show')->where('id', '[0-9]+');
+
+    Route::get('User/{id}/changePass', 'UsersController@changePassword');
 
     //admin only
     Route::get('User/search', 'UsersController@search');
-    Route::get('User', 'UsersController@index');
+    Route::resource('User', 'UsersController',['except' => ['create']]);
     Route::resource('Record', 'RecordController');
     Route::resource('Skill', 'SkillController');
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\ApplicantMiddleware']], function () {
-    Route::get('CV/{id}/edit2', 'CVController@edit2');
     Route::resource('CV', 'CVController', ['except' => ['index', 'destroy', 'show']]);
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\VisitorMiddleware']], function () {

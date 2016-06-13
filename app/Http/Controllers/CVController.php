@@ -26,7 +26,6 @@ class CVController extends Controller
 
     public function search(Request $request)
     {
-
         if (Gate::denies('Visitor')) {
             abort(403);
         }
@@ -40,20 +39,6 @@ class CVController extends Controller
         return View::make('includes.table-result')->with('CVs', $CV);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-
-    }
-
-    public function store($id, Request $request)
-    {
-    }
-
 
     public function show($id)
     {
@@ -65,8 +50,10 @@ class CVController extends Controller
         $skills = $cv->Skill;
         $Records = $cv->Record;
         $Records = $Records->sortBy("Date");
+        $user = $cv->User;
+        $image = $user->image;
         return View::make('xCV.CVshow')->with('CV', $cv)->with('Records', $Records)
-            ->with('skills', $skills);
+            ->with('skills', $skills)->with('image', $image );
     }
 
     public function show2($id)
@@ -80,19 +67,6 @@ class CVController extends Controller
         $Records = $Records->sortBy("Date");
         return View::make('xCV.CVview')->with('CV', $cv)->with('Records', $Records);
     }
-/*
-    public function edit2($id)
-    {
-        // $id = $id - 14000;
-        $cv = CV::findOrFail($id);
-        if (Gate::denies('update-cv', $cv->user_id)) {
-            abort(403);
-        }
-        $Records = $cv->Record;
-        $Records = $Records->sortBy("Date");
-        return View::make('xCV.CVedit2')->with('CV', $cv)->with('Records', $Records);
-    }
-*/
     public function edit($id)//Get
     {
         //$id = $id - 14000;
@@ -144,5 +118,19 @@ class CVController extends Controller
 
         return $dompdf->stream("CV.pdf");
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+
+    }
+
+    public function store($id, Request $request)
+    {
+    }
+
 
 }

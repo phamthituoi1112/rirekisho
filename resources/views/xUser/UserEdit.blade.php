@@ -37,7 +37,7 @@
                         </div>
                     </li>
                     <li >
-                        <a class="" href="{{url('User',[$user->id])}}">Đổi mật khẩu </a>
+                        <a class="" href="{{url('User',[$user->id,'edit'])}}">Đổi mật khẩu </a>
                     </li>
                 </ul>
 

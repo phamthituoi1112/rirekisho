@@ -8,7 +8,7 @@
                 <span class="dropzone-text">Upload photos</span>
             @endif
         </div>
-        <input type="file" accept="image/png,image/jpeg" name="image"/>
+        <input id="fileInput" type="file" accept="image/png,image/jpeg" name="image"/ >
     </div>
     <i> Click to edit</i>
 </div>

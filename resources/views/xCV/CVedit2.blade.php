@@ -48,7 +48,7 @@
             </label>
             <!--change editable="Rirekisho" name=field_name  -->
             <input id="{{$key}}" editable="Rirekisho" style="width: 90%;" name="positions"
-                   type="text" class="input-left float_left" placeholder="some text"
+                   type="text" class="input-left float_left" placeholder="Vị trí ứng tuyển"
                    value="{{ $CV->positions }}">
             <!-- s_field_name_$key-->
             <div class="success-status float_left" id="s_positions_{{$key}}" style="display:none;">
@@ -66,7 +66,7 @@
             </label>
             <!-- editable="Rirekisho" name=field_name  -->
             <input id="{{$key}}" editable="Rirekisho" style="width: 90%;" name="Request"
-                   type="text" class="input-left float_left" placeholder="some text"
+                   type="text" class="input-left float_left" placeholder="Lời nhắn đến nhà tuyển dụng"
                    value=" {{ $CV->Request }}">
             <!-- s_field_name_$key-->
             <div class="success-status float_left" id="s_Request_{{$key}}" style="display:none;">
