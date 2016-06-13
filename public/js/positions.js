@@ -9,15 +9,13 @@ $(document).ready(function () {
 
         $.get(my_url, function (data) {
             //success data
-            console.log(my_url)
-            console.log(data);
             $('#position_id').val(data.id);
             $('#position_name').val(data.name);
             $('#position_active').val(data.active);
             $('#btn-save').val("update");
 
             $('#myModal').modal('show');
-        })
+        });
     });
 
     //display modal form for creating new position
@@ -37,7 +35,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 
             }
-        })
+        });
 
         $.ajax({
             type: "DELETE",
@@ -59,13 +57,13 @@ $(document).ready(function () {
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
-        })
+        });
 
         e.preventDefault();
 
         var formData = {
             name: $('#position_name').val(),
-            active: $('#position_active').is(':checked'),
+            active: $('#position_active').is(':checked')
         };
 
         console.log(formData);
@@ -91,10 +89,10 @@ $(document).ready(function () {
 
                 var pos = '<tr id="pos' + data.id + '">';
                 pos += '<td>' + data.name + '</td>';
-                pos += '<td>' + data.active + '</td>'
+                pos += '<td>' + data.active + '</td>';
                 pos += '<td><button class="btn btn-warning btn-lg open-modal"';
                 pos += 'name="btn_position" id="btn_position" value="' + data.id;
-                pos += '">Edit</button> <button class="btn btn-danger btn-lg delete-pos"'
+                pos += '">Edit</button> <button class="btn btn-danger btn-lg delete-pos"';
                 pos += 'name="btn_delete" id="btn_delete" value="' + data.id + '">Delete</button>';
                 pos += '</td></tr>';
 
@@ -108,7 +106,7 @@ $(document).ready(function () {
 
                 $('#frmPositions').trigger("reset");
 
-                $('#myModal').modal('hide')
+                $('#myModal').modal('hide');
             }
             ,
             error: function (data) {

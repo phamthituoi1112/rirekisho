@@ -19,7 +19,14 @@
                         @can('Admin')
                             <li><a href="{{url('User')}}">User</a></li>
                             <li><a href="{{url('positions')}}">Positions</a></li>
-                            <li><a href="{{url('emails/create')}}">Send email</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Email
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="{{url('emails/create')}}">Send email</a></li>
+                                  <li><a href="{{url('groups')}}">Group email</a></li>
+                                </ul>
+                            </li>
                         @endcan
                         @can('Applicant')
                             <li><a href="{{url('CV',[$CV->id])}}">Xem CV</a></li>

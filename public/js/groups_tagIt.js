@@ -1,16 +1,15 @@
 $(document).ready(function () {
     var url = '/rirekisho1/public';
     
-    $("#recipient").tagit({
+    $("#members").tagit({
         singleField: true,
-        singleFieldNode: $('#recipient'),
-        allowSpaces: false,
+        allowSpaces: true,
         removeConfirmation: true,
-        placeholderText: "Recipients",
+        placeholderText: "Groups",
         
         tagSource: function (request, response) {
             $.ajax({
-                url: url + "/emails/getEmailAddress",
+                url: url + "/groups/getUsername",
                 data: {term: request.term},
                 dataType: "json",
                 type: 'POST',
@@ -18,7 +17,7 @@ $(document).ready(function () {
                     response($.map(data, function (item) {
                         return {
                             label: item.name + ': ' + item.email,
-                            value: item.email
+                            value: item.name
                         };
                     }));
                     

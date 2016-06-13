@@ -10,7 +10,7 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 
                 }
-            })
+            });
 
             var data = {
                 id: $(this).children('#id').val(),
@@ -29,7 +29,7 @@ $(document).ready(function () {
                     btn_send_email += data.status + '</button>';
                     $('#btn_send_email' + data.id).replaceWith(btn_send_email);
                     alert('Success');
-                },
+                }
             });
         } else
         {

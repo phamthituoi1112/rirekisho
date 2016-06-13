@@ -31,6 +31,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('Record', 'RecordController');
     Route::resource('positions', 'PositionsController');
+    Route::resource('groups', 'GroupsController');
+    Route::post('/groups/getUsername', [
+        'as' => 'groups.getUsername',
+        'uses' => 'GroupsController@getUsername',
+    ]);
+    Route::post('/groups/updateListMember', [
+        'as' => 'groups.updateListMember',
+        'uses' => 'GroupsController@updateListMember',
+    ]);
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\ApplicantMiddleware']], function () {
     Route::get('CV/{id}/edit2', 'CVController@edit2');

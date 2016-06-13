@@ -69,7 +69,7 @@ class PositionsController extends Controller
 
         $position->save();
 
-        Session::flash('flash_message', 'Position has been saved.');
+//        Session::flash('flash_message', 'Position has been saved.');
         return Response::json($position);
     }
 
@@ -113,14 +113,17 @@ class PositionsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-        
-        $this->validate($request, [
-            'name' => 'required|max:255',
-        ]);
 
         $position = Positions::findorfail($id);
         
+        if($position->name != $request->name) {
+        $this->validate($request, [
+            'name' => 'required|max:255|unique:positions,name',
+        ]);
+        
         $position->name = $request->name;
+        }
+        
         if ($request->active == "true") {
             $position->active = 1;
         }
@@ -130,7 +133,7 @@ class PositionsController extends Controller
 
         $position->update();
 
-        Session::flash('flash_message', 'Position has been updated.');
+//        Session::flash('flash_message', 'Position has been updated.');
         return Response::json($position);
     }
 
@@ -150,7 +153,7 @@ class PositionsController extends Controller
         
         $position->delete();
         
-        Session::flash('flash_message', 'Position has been deleted.');
+//        Session::flash('flash_message', 'Position has been deleted.');
         return Response::json($position);
     }
 }

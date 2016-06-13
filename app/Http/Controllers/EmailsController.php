@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Gate;
 use Session;
 use App\User;
+use App\Groups;
 
 class EmailsController extends Controller
 {
@@ -50,23 +51,37 @@ class EmailsController extends Controller
         if (Gate::denies('Admin')) {
             abort(403);
         }
-        
+        //get email address
         $recipients = explode(",", $request->recipient);
 
         foreach ($recipients as $recipient) {
             if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-                $errors = 'Recipitents must be email.';
-                return redirect()->back()->withErrors($errors);
+                //is group's name?
+                $group = Groups::where('name', '=', $recipient)
+                        ->with('users')->first();
+                //yes
+                if ($group) {
+                    foreach ($group->users as $user) {
+                        //add email address
+                        $recipients[] = $user->email;
+                    }
+                    //remove group's name
+                    $key = array_search($recipient, $recipients);
+                    unset($recipients[$key]);
+                } else { //NO!
+                    $errors = 'Recipitents must be email.';
+                    return redirect()->back()->withErrors($errors);
+                }
             }
-        }
-        
+        }//end get email address
+
         $this->validate($request, [
             'sender' => 'required',
             'subject' => 'required',
             'content' => 'required',
         ]);
-        
-        if (isset($request->attach[0])) {
+
+        if (isset($request->attach[0])) {//if attach file
             //upload file to server
             $files = $request->attach;
             foreach ($files as $file) {
@@ -97,7 +112,7 @@ class EmailsController extends Controller
             Session::flash('flash_message', 'Email has been sent.');
             return redirect()->back();
         }
-
+        //if no attach file
         Mail::send('emails._email', ['content' => $request->content], function ($m) use ($request, $recipients) {
             $m->from(config('mail.username'), $request->sender);
             $m->to($recipients)->subject($request->subject);
@@ -118,16 +133,13 @@ class EmailsController extends Controller
             abort(403);
         }
 
-        if($request->type)
-        {
+        if ($request->type != null) {
             $email = $request->email;
-            
+
             $data = array('email' => $email);
-            
+
             return view('emails._form_email_1')->with($data);
         }
-        
-        return 1;
     }
 
     /**
@@ -159,8 +171,8 @@ class EmailsController extends Controller
             $m->from(config('mail.username'), $request->sender);
             $m->to($request->recipient)->subject($request->subject);
         });
-        
-        Session::flash('flash_message', 'Email has been sent.');
+
+//        Session::flash('flash_message', 'Email has been sent.');
     }
 
     /**
@@ -170,13 +182,24 @@ class EmailsController extends Controller
      */
     public function getEmailAddress(Request $request)
     {
+        if (Gate::denies('Admin')) {
+            abort(403);
+        }
+
         $key = $request->term;
-        
+
         $emails = User::select('name', 'email')
-            ->where('email', 'like' , '%'.$key.'%')
-            ->orWhere('name', 'like', '%'.$key.'%')
+            ->where('email', 'like', '%' . $key . '%')
+            ->orWhere('name', 'like', '%' . $key . '%')
             ->get();
-        
+
+        $groups = Groups::select('name')
+                ->where('name', 'like', '%' . $key . '%')->get();
+
+        foreach ($groups as $group) {
+            $emails[] = ['name' => $group->name, 'email' => $group->name];
+        }
+
         return Response::json($emails);
     }
 }

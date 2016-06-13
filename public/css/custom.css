@@ -1,3 +1,8 @@
+.ui-autocomplete.ui-front
+{
+    z-index: 1051;
+}
+
 .plus-button{
     background-color: transparent;
     border: none;
@@ -13,31 +18,31 @@
 }
 
 .background-image {
-  /*background-image: url("../img/14028718821_8009120372_k.jpg");
-  background-image: url("../img/yosemite.jpg");*/
-  background-image: url("../img/bg.jpg");
-  background-size: cover;
-  display: block;
-  filter: blur(5px);
-  -webkit-filter: blur(5px);
-  height: 800px;
-  left: 0;
-  position: fixed;
-  right: 0;
-  z-index: 1;
+    /*background-image: url("../img/14028718821_8009120372_k.jpg");
+    background-image: url("../img/yosemite.jpg");*/
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+    display: block;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    height: 800px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1;
 }
 
 .content {
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 3px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-  position: relative;
-  margin: auto;
-  z-index: 2;
-  /********/
-  padding: 10 20px;
-  top: 90px;
-  min-width: 300px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    position: relative;
+    margin: auto;
+    z-index: 2;
+    /********/
+    padding: 10 20px;
+    top: 90px;
+    min-width: 300px;
 }
 div.content:hover,div.content:active,div.content:focus{
     background: rgba(255, 255, 255, 0.6);
@@ -85,21 +90,21 @@ div.content:hover,div.content:active,div.content:focus{
     padding: 20px;
 }
 .success-status{
-   /*color: green; */
-   color:rgb(140, 102, 153);
-   font-size: 24px;
-   height: 38px;
-   line-height: 38px !important;
-   opacity: .8;
-   text-align: center;
-   top: 6px;
-   width: 42px;
-   z-index: 2;
-   right: -3px;
+    /*color: green; */
+    color:rgb(140, 102, 153);
+    font-size: 24px;
+    height: 38px;
+    line-height: 38px !important;
+    opacity: .8;
+    text-align: center;
+    top: 6px;
+    width: 42px;
+    z-index: 2;
+    right: -3px;
 }
 
 .editable-table tbody tr{
-   height: 42px;
+    height: 42px;
 }
 
 .profile .profile-picture{
@@ -108,32 +113,32 @@ div.content:hover,div.content:active,div.content:focus{
 
 }
 .display-box{
-   height:500px;
-   margin-top: 5px; 
-   position:relative;
-   border-radius: 3px;
-   border: 1px solid #ddd;
-   z-index: 10;
-   line-height: 1.7;
-   -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
-   -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
-   box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
-   font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+    height:500px;
+    margin-top: 5px; 
+    position:relative;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    z-index: 10;
+    line-height: 1.7;
+    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, .1);
+    font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 }
 .top-card{
-   display: block;
-   float: left;
-   position: relative;
-   width: 250px;
-   height: 100%;
-   background :white;
-   padding:10px  5px ;
-   border-right: 1px solid #ddd;
-   overflow: scroll;
+    display: block;
+    float: left;
+    position: relative;
+    width: 250px;
+    height: 100%;
+    background :white;
+    padding:10px  5px ;
+    border-right: 1px solid #ddd;
+    overflow: scroll;
 }
 .profile-nav{
-   /*padding: 0 25px;*/ 
-   line-height: 40px;
+    /*padding: 0 25px;*/ 
+    line-height: 40px;
 
 }
 
@@ -148,10 +153,10 @@ div.content:hover,div.content:active,div.content:focus{
 
 }
 .profile-nav .p-link a {
-	display: block;
-	color: gray;
-	width: 100%;
-	height: 100%;
+    display: block;
+    color: gray;
+    width: 100%;
+    height: 100%;
 }
 .profile-nav .p-link:hover,.p-link:focus,.p-link:active{
     background-color: rgba(51, 51, 51, 0.9);
@@ -168,7 +173,7 @@ div.content:hover,div.content:active,div.content:focus{
 
 }
 #p-active{
-	color: rgb(140, 102, 153);
+    color: rgb(140, 102, 153);
 }
 .profile-nav .p-link .li-text{
     float: left;
@@ -177,8 +182,8 @@ div.content:hover,div.content:active,div.content:focus{
 }
 
 .title{
-	text-align: center;
-	font-weight: 300;
+    text-align: center;
+    font-weight: 300;
 }
 .title h2{
     color:rgba(0, 0, 0, 0.5);
@@ -191,14 +196,14 @@ div.content:hover,div.content:active,div.content:focus{
 }
 
 .basic-info{
-	float: left;
-	display: block;
-	overflow: scroll;
-	width: 70%;
-	height: 100%;
+    float: left;
+    display: block;
+    overflow: scroll;
+    width: 70%;
+    height: 100%;
 }
 .basic-info .bd{
-	padding: 25px 30px 30px;
+    padding: 25px 30px 30px;
 }
 .basic-info .bd ul{
     display: block;
@@ -212,13 +217,13 @@ div.content:hover,div.content:active,div.content:focus{
     min-height: 150px;
 }
 .basic-info .bd table{
-	width: 100%;
+    width: 100%;
 }
 .basic-info .bd table th{
-	width: 30%;
+    width: 30%;
 }
 .basic-info .bd table td{
-	width: 70%;
+    width: 70%;
 }
 
 .basic-info .bd table th h2{
@@ -262,41 +267,41 @@ div.content:hover,div.content:active,div.content:focus{
     color: #9a9a9a;
 }
 #dropzone.hover {
-  border: 10px solid #d4d4d4;
-  color: #FE5;
+    border: 10px solid #d4d4d4;
+    color: #FE5;
 }
 
 #dropzone.dropped {
-  background: #f2f2f2;
-  border: 1px solid #d4d4d4;
+    background: #f2f2f2;
+    border: 1px solid #d4d4d4;
 }
 
 #dropzone div {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 #dropzone img {
-  border-radius: 1px;
-  vertical-align: middle;
-  max-width: 95%;
-  max-height: 95%;
+    border-radius: 1px;
+    vertical-align: middle;
+    max-width: 95%;
+    max-height: 95%;
 }
 
 #dropzone [type="file"] {
-  cursor: pointer;
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 .dropzone-text{
-    
+
 }
 
 

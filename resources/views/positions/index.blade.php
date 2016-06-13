@@ -47,13 +47,15 @@
                 <form id="frmPositions" name="frmPositions" class="form-horizontal">
 
                     <div class="form-group error">
-
+                        
                         <label for="name" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control has-error" id="position_name" name="name"/>
                         </div>
-                        <label for="active" class="col-sm-3 control-label">Active</label>
-                        <input type="checkbox" id="position_active" name="active" value="1"/>
+                        <div class="form-inline">
+                            <label for="active" class="col-sm-3 control-label">Active</label>
+                            <input class="form-control" type="checkbox" id="position_active" name="active" value="1"/>
+                        </div>
 
                     </div>
 

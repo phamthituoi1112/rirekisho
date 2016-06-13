@@ -27,6 +27,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasOne('App\CV');
     }
+    
+    public function Groups()
+    {
+        return $this->belongsToMany(
+            'App\Groups', 'pivot_users_groups', 'user_id', 'group_id');
+    }
+    
+    //Delete all relation before datele
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function($user) {
+            $user->groups()->detach();
+        });
+    }
+    
+    
     public function getRole()
     {
         if ($this->role == 0)$Role = "Applicant";
