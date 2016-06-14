@@ -12,6 +12,7 @@ $(document).ready(function () {
             $('#group_id').val(data.id);
             $('#group_name').val(data.name);
             $('#btn-save').val("update");
+            $('#error-frmGroups').html('');
 
             $('#myModal').modal('show');
         });
@@ -21,6 +22,7 @@ $(document).ready(function () {
     $('#btn_group_create').click(function () {
         $('#btn-save').val("add");
         $('#frmGroups').trigger("reset");
+        $('#error-frmGroups').html('');
         $('#myModal').modal('show');
     });
 
@@ -63,12 +65,13 @@ $(document).ready(function () {
                 $("#members").tagit("createTag", data.users[i].name);
             }
             $('#group_id').val(data.id);
+            $('#error-frmMembers').html('');
 
             $('#myModal1').modal('show');
         });
     });
     //update list member
-    $('#btn-member-save').click(function (e){
+    $('#btn-member-save').click(function (e) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -78,7 +81,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var my_url = url + 'groups/updateListMember';
-        
+
         var formData = {
             members: $('#members').val(),
             group_id: $('#group_id').val()
@@ -91,12 +94,13 @@ $(document).ready(function () {
             type: "POST",
             success: function (data) {
                 console.log(data);
-                
-                $('#frmGroups').trigger("reset");
+
+                $('#frmMembers').trigger("reset");
                 $('#myModal1').modal('hide');
             },
             error: function (data) {
                 console.log('Error:', data);
+                $('#error-frmMembers').append(data.responseText);
             }
         });
     });
@@ -163,6 +167,7 @@ $(document).ready(function () {
             ,
             error: function (data) {
                 console.log('Error:', data);
+                $('#error-frmGroups').html(data.responseText);
             }
         });
     });

@@ -43,6 +43,7 @@
             </div>
             <div class="modal-body">
                 <form id="frmGroups" name="frmGroups" class="form-horizontal">
+                    <div id="error-frmGroups"></div>
                     <div class="form-group error">
                         <label for="name" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
@@ -69,7 +70,7 @@
             </div>
             <div class="modal-body">
                 <form id="frmMembers" name="frmMembers" class="form-horizontal">
-
+                    <div id="error-frmMembers"></div>
                     <div class="form-group error">
                         <label for="name" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">

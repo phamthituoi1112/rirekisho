@@ -13,6 +13,7 @@ $(document).ready(function () {
             $('#position_name').val(data.name);
             $('#position_active').val(data.active);
             $('#btn-save').val("update");
+            $('#error-frmPositions').html('');
 
             $('#myModal').modal('show');
         });
@@ -22,6 +23,7 @@ $(document).ready(function () {
     $('#btn_pos_create').click(function () {
         $('#btn-save').val("add");
         $('#frmPositions').trigger("reset");
+        $('#error-frmPositions').html('');
         $('#myModal').modal('show');
     });
 
@@ -111,6 +113,7 @@ $(document).ready(function () {
             ,
             error: function (data) {
                 console.log('Error:', data);
+                $('#error-frmPositions').html(data.responseText);
             }
         });
     });

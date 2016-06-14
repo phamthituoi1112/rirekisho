@@ -47,7 +47,7 @@
                 <form id="frmPositions" name="frmPositions" class="form-horizontal">
 
                     <div class="form-group error">
-                        
+                        <div id="error-frmPositions"></div>
                         <label for="name" class="col-sm-3 control-label">Name</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control has-error" id="position_name" name="name"/>

@@ -74,8 +74,8 @@ class EmailsController extends Controller
                     $key = array_search($recipient, $recipients);
                     unset($recipients[$key]);
                 } else { //NO!
-                    $errors[] = 'Recipitent must be email.';
-                    return redirect()->back()->withErrors($errors);
+                    $errors[] = 'Recipitent must be an email address.';
+                    return redirect()->back()->withErrors($errors)->withInput($request->all());
                 }
             }
         }
@@ -85,7 +85,7 @@ class EmailsController extends Controller
         //check - is there any email address?
         if (sizeOf($recipients) == 0) {
             $errors[] = 'No recipient!';
-            return redirect()->back()->withErrors($errors);
+            return redirect()->back()->withErrors($errors)->withInput($request->all());
         }//end get email address
 
         $this->validate($request, [
