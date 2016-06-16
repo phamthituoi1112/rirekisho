@@ -29,8 +29,15 @@
                                             class="sr-only">(current)</span></a></li>
                         @endcan
                         <li><a href="{{url('about')}}">About</a></li>
-                        <li><a href="{{url('User',[Auth::User()->id])}}">Cài đặt</a></li>
-                        <li><a href="{{url('auth/logout')}}">Đăng xuất</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">User's setting
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{url('User',[Auth::User()->id, 'showMyBookmarks'])}}">My bookmarks</a></li>
+                                <li><a href="{{url('User',[Auth::User()->id])}}">Cài đặt</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{url('auth/logout')}}">�?ăng xuất</a></li>
                         <li><a> Hello {{Auth::User()->name}}</a></li>
                     </ul>
 

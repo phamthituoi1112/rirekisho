@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
+use App\CV;
 use Gate;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
@@ -143,5 +144,29 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    /**
+     * show visitor's bookmarks
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function showMyBookmarks ($id)
+    {
+        if (Gate::denies('Visitor')) {
+            abort(403);
+        }
+        
+//        $user = User::with('Bookmarks')->findorfail($id);
+        $CVs = CV::whereHas('Bookmarks', function($query) use ($id) {
+            $query->where('visitor_id', '=', $id);
+        })->paginate(10);
+        
+        $data = [
+            'CVs' => $CVs,
+        ];
+        
+        return view('xUser.myBookmark')->with($data);
     }
 }

@@ -28,14 +28,14 @@
 					<li class="p-link">
 						<a class="" name="P-school">
 							<i class="fa fa-graduation-cap" ></i>
-							<div class="li-text">学歴・免許・資格 </div>
+							<div class="li-text">学歴・�?許・資格 </div>
 
 						</a>
 					</li>
 					<li class="p-link">
 						<a name="P-work">
 							<i class="fa fa-history " ></i>
-							<div class="li-text">職歴 </div>
+							<div class="li-text">�?�歴 </div>
 
 						</a>
 					</li>
@@ -71,6 +71,16 @@
 	</div>
 
 	<div class="basic-info" >
+        @can('Visitor')
+        <div id="bookmark" class="bookmark pull-right" style="padding-right: 10%;">
+            @if($CV->Bookmarks->contains(Auth::User()->id))
+                <div style="color: darkorange;"><span class="glyphicon glyphicon-bookmark" style="font-size: 50px"></span></div>
+            @else
+                <div style="color: darkgrey"><span class="glyphicon glyphicon-bookmark"  style="font-size: 50px"></span></div>    
+            @endif
+        </div>
+        @endcan
+        
 		<div class="hd">
 			
 		</div>
@@ -92,7 +102,7 @@
 					</tr>
 
 					<tr>
-						<th><h4>配偶者</h4> </th>
+						<th><h4>�?�?�者</h4> </th>
 						<td>{{$CV->Jmarriage}} </td>
 
 					</tr>
@@ -109,7 +119,7 @@
 
 					</tr>
 					<tr>
-						<th><h4>現住所</h4> </th>
+						<th><h4>�?��?所</h4> </th>
 						<td>{{$CV->Address}}</td>
 
 					</tr>
@@ -159,7 +169,7 @@
 			?>
 			<table>
 				<tr>
-					<th><h2>免許・資格</h2> </th>
+					<th><h2>�?許・資格</h2> </th>
 				</tr>
 
 
@@ -212,7 +222,7 @@
 			?>
 			<table>
 				<tr>
-					<th><h2>職歴</h2> </th>
+					<th><h2>�?�歴</h2> </th>
 				</tr>
 
 
@@ -240,4 +250,10 @@
 </div>
 </div>
 
+<input type="hidden" id="cv_id" value="{{ $CV->id }}"/>
+<input type="hidden" id="visitor_id" value="{{ Auth::user()->id }}"/>
+<meta name="_token" content="{!! csrf_token() !!}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="{{asset('js/bookmarks.js')}}"></script>
 @stop

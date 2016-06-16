@@ -27,6 +27,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasOne('App\CV');
     }
+    public function Bookmarks()
+    {
+        return $this->belongsToMany(
+            'App\CV', 'bookmarks', 'visitor_id', 'cv_id');
+    }
     public function getRole()
     {
         if ($this->role == 0)$Role = "Applicant";

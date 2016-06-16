@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth', 'App\Http\Middleware\ApplicantMiddleware'
     Route::resource('CV', 'CVController', ['except' => ['index', 'destroy', 'show']]);
 });
 Route::group(['middleware' => ['auth', 'App\Http\Middleware\VisitorMiddleware']], function () {
+    Route::get('User/{id}/showMyBookmarks', 'UsersController@showMyBookmarks');
+    Route::post('CV/bookmark', 'CVController@bookmark');
     Route::get('CV/search', 'CVController@search');
     Route::get('CV', 'CVController@index');
     Route::get('CV/{id}/getPDF', 'CVController@getPDF');

@@ -37,11 +37,14 @@
     <tr>
       <th></th>
       <th data-field=""><a></a></th>
-      <th data-field="name" style="width: 20%;"><a>名前</a></th>
-      <th data-field="kana" style="width: 25%;"><a>名前</a></th>
+      <th data-field="name" style="width: 20%;"><a>�??�?</a></th>
+      <th data-field="kana" style="width: 25%;"><a>�??�?</a></th>
       <th data-field="worth" style="width: 15%;"><a>性別</a></th>
       <th data-field="age"><a>年齢</a></th>
       <th data-field="country"><a></a></th>
+      @can('Visitor')
+      <th data-field="bookmark" style="width: 10%;"><a>Bookmark</a></th>
+      @endcan
       @can('Admin')
       <th ></th>
       @endcan

@@ -11,6 +11,7 @@ use App\Record;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateRequest;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Illuminate\Support\Facades\Response;
 
 class CVController extends Controller
 {
@@ -19,7 +20,7 @@ class CVController extends Controller
     {
         $CVs = CV::all();
         $CVs = CV::paginate(10);
-
+        
         return view('xCV.CVindex', compact('CVs'));
     }
 
@@ -34,7 +35,8 @@ class CVController extends Controller
         if ($request->has("data-sort")) {
             if ($request->input('data-sort') == "desc") {
                 $CV = $CV->sortBy($request->input('data-field'));
-            } else $CV = $CV->sortByDesc($request->input('data-field'));
+            } else
+                $CV = $CV->sortByDesc($request->input('data-field'));
         }
         return View::make('includes.table-result')->with('CVs', $CV);
     }
@@ -46,13 +48,13 @@ class CVController extends Controller
      */
     public function create(Request $request)
     {
-
+        
     }
 
     public function store($id, Request $request)
     {
+        
     }
-
 
     public function show($id)
     {
@@ -124,7 +126,7 @@ class CVController extends Controller
         }
         $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        
+
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: private', false);
@@ -132,12 +134,39 @@ class CVController extends Controller
         header('Content-type: application/pdf; charset=UTF-8');
         setlocale(LC_ALL, 'ja_JP.UTF-8');
         $html = View::make('invoice.cv')
-            ->with('CV', $CV)->with('Records', $Records)->render();
+                ->with('CV', $CV)->with('Records', $Records)->render();
         //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
-       $dompdf = PDF::loadHTML($html);
+        $dompdf = PDF::loadHTML($html);
 
         return $dompdf->stream("CV.pdf");
     }
 
+    /**
+     * Allow visitor bookmark/unbookmark CV
+     * 
+     * @param Request $request
+     * @return true/false
+     */
+    public function bookmark(Request $request)
+    {
+        if (Gate::denies('Visitor')) {
+            abort(403);
+        }
+        
+        $cv_id = $request->cv_id;
+        $visitor_id = $request->visitor_id;
+
+        $cv = CV::findorfail($cv_id);
+        
+        //if cv has been bookmarked -> unbookmark
+        if ($cv->Bookmarks->contains($visitor_id)) {
+            $cv->Bookmarks()->detach($visitor_id);
+        } 
+        else { //if cv hasn't been bookmarked -> bookmarked
+            $cv->Bookmarks()->attach($visitor_id);
+        }
+        
+        return Response::json(!$cv->Bookmarks->contains($visitor_id));
+    }
 }

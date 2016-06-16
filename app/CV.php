@@ -43,6 +43,12 @@ class CV extends Model
     {
         return $this->hasMany('App\Skill', 'cv_id');
     }
+    
+    public function Bookmarks()
+    {
+        return $this->belongsToMany(
+            'App\User', 'bookmarks', 'cv_id', 'visitor_id');
+    }
     /************************** scope ********************************************/
         public function scopeActive($query)
     {
@@ -79,7 +85,7 @@ class CV extends Model
         $today = date_create();
         date_timestamp_set($today, time());
         $tuoi = date_diff($value, $today);
-        //$tuoi =$tuoi->format("Bạn bây giờ : %y tuổi %m tháng <br>");
+        //$tuoi =$tuoi->format("Bạn bây gi�? : %y tuổi %m tháng <br>");
         return $tuoi->format("%y");;
     }
     public function getJMarriageAttribute($value){
