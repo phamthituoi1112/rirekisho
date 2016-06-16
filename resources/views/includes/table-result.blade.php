@@ -22,6 +22,13 @@ $CVx = $CVs->reject(function ($item) {
     <td class="worth">{{$CV->j_gender}}</td>
     <td data-field="age">{{ $CV->Age }} 歳</td>
     <td></td>
+    @can('Visitor')
+    <td>
+        <div class="position" id="position{{ $CV->id }}">
+            {{ $CV->position->name }}
+        </div>
+    </td>
+    @endcan
     @can('Admin')
     <td>
         <div class="status" id="status{{ $CV->id }}">
@@ -29,11 +36,6 @@ $CVx = $CVs->reject(function ($item) {
             <input type="hidden" value="{{ $CV->id }}" id="id"/>
             <input type="hidden" value="{{ $CV->User->email }}" id="email"/>
             <button id="btn_send_email{{ $CV->id }}" class="btn btn-primary btn-send-email" value="{{ $CV->Status }}">Send Email {{ $CV->Status }}</button>
-        </div>
-    </td>
-    <td>
-        <div class="position" id="position{{ $CV->id }}">
-            {{ $CV->position->name }}
         </div>
     </td>
     <td><a href="{{url('CV',[$CV->id,'edit'])}}">Sửa</a></td>

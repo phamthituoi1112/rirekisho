@@ -48,9 +48,11 @@
       <th data-field="worth" style="width: 15%;"><a>性別</a></th>
       <th data-field="age" style="width: 10%;"><a>年齢</a></th>
       <th data-field="country"><a></a></th>
+      @can('Visitor')
+      <th data-field="apply_to" style="width: 15%;"><a>Apply to</a></th>
+      @endcan
       @can('Admin')
       <th data-field="status" style="width: 15%;"><a>Status</a></th>
-      <th data-field="apply_to" style="width: 15%;"><a>Apply to</a></th>
       <th></th>
       @endcan
     </tr>
