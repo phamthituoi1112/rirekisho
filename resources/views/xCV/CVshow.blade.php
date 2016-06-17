@@ -6,12 +6,18 @@
         <div class="top-card " style="">
             <div class="profile">
                 <div class="profile-picture ">
-                        @if(isset($image)&&($image!=""))
-                            <img style="height: 200px; width: 200px;" src=<?php echo "/img/thumbnail/thumb_" . $image;?> >
-                        @else
-                        <img style="height: 200px; width: 200px;"  src= "/img/no_image.gif">
-                            <!--span class="dropzone-text">No image</span-->
-                        @endif
+                    <?php ?>
+                    @if(isset($image)&&($image!=""))
+                        <img style="height: 200px; width: 200px;" src=<?php echo "/img/thumbnail/thumb_" . $image;?> >
+                    @else
+                        <div class="dropzone-text-place"
+                             style="background-color:{{$CV->User->getThemeColor()}} ">
+                            <span class="dropzone-text letter-avatar"
+                                  style="color: {{$CV->User->getTextColor()}};font-size:120px;">
+                                {{substr(trim($CV->name), 0, 1)}}
+                            </span>
+                        </div>
+                    @endif
                 </div>
                 <div class="clear-fix"></div>
                 <div class="profile-overview ">
@@ -19,7 +25,19 @@
                     <ul class="profile-nav clickable">
                         <li class="title">
                             <h2> {{$CV->Last_name}} {{$CV->First_name}}</h2>
-                            <h3>{{$CV->Furigana_name}}</h3>
+                            <h3>{{$CV->Furigana_name}}
+                                @can('Visitor')
+                                    <a data-action="bookmark" data-bookmark-id="{{$CV->user_id}}"
+                                       style='color:#efa907;' title="Bookmark this user!">
+                                        @if($bookmark)
+                                            <i class="fa fa-star"></i>
+                                        @else
+                                            <i class="fa fa-star-o "></i>
+                                        @endif
+                                    </a>
+
+                                @endcan
+                            </h3>
                         </li>
 
                         <li class="p-link">

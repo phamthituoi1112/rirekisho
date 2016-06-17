@@ -3,6 +3,7 @@ $(document).ready(function () {
             $(this).data("validator").settings.success = false;
         });
         /*************************fix navbar*************************************/
+
         var nav = $('.navbar');
         var num = $('body').offset().top;
         $(window).bind('scroll', function () {
@@ -13,6 +14,25 @@ $(document).ready(function () {
                 nav.removeClass("nav_fixed");
             }
         });
+
+        $(".burger-effect").bind("click", openNav).removeClass("active");
+
+        //$(".burger-effect").bind("click", closeNav).addClass("active");
+        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "220px";
+            document.getElementById("push").style.marginLeft = "220px";
+            $(".burger-effect").bind("click", closeNav).addClass("active");
+        }
+
+        /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("push").style.marginLeft = "0";
+            $(".burger-effect").bind("click", openNav).removeClass("active");
+        }
+
+
         /*
          var notify = $('[notification=true]'), timer;
          $(document).ajaxStart(function () {
@@ -41,7 +61,7 @@ $(document).ready(function () {
             var content = $(this).next();
             if (!(content.is(":visible"))) {   //no - its hidden - slide all the other open tabs to hide 
                 $('[slide-toggle=true]').hide();
-                // open up the content needed         
+                // open up the content needed 
                 content.slideToggle(800);
             }
         });
@@ -61,8 +81,6 @@ $(document).ready(function () {
             var dataString = name + '=' + value;
             if (value.length > 0) {
                 $.ajax({
-                    //type: "GET",
-                    //url: "/CV/"+key+"/edit",
                     type: "PUT",
                     url: "/CV/" + key,
                     data: $(this).serialize(),
@@ -85,7 +103,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "PUT",
                 url: "/CV/" + key,
-                data: dataString,
+                data: this.serialize(),
                 cache: false,
                 success: function (html) {
 
@@ -93,18 +111,110 @@ $(document).ready(function () {
             });
         });
         /*****************show CV*************************/
-        $(".clickable li a").on('click', function () {
-            var name = $(this).attr('name');//show
-            $(".bd").hide();
-            $("#" + name).show();
-            $("#p-active").removeAttr('id');
+        $(".clickable li.p-link a").on('click', function () {
+            var name = $(this).attr('name');//gets element
+            $(".bd").hide();//hides others
+            $("#" + name).show();//show
+            $("#p-active").removeAttr('id');// removes css
             $(this).children('i').attr("id", "p-active");
         });
-        $(".skippable li a").on('click', function () {
+        $(".skippable li.p-link a").on('click', function () {
             var name = $(this).attr('href');
             $("#p-active").removeAttr('id');
             $(this).children('i').attr("id", "p-active");
         });
+
+        /****************bookmark*********************/
+        $("[data-action=bookmark]").bind("click", bookmark);
+        $("[data-action=deleteBookmark]").bind("click", bookmark);
+        function bookmark(e) {
+            var data = {
+                "bookmark-id": $(this).attr('data-bookmark-id')
+            };
+            var star = $('[data-action=bookmark]');
+            $.ajax({
+                type: "POST",
+                url: "/" + "Bookmark",
+                data: $.param(data),
+                cache: false,
+                success: function (html) {
+                    var t = html == "1";
+                    if (html == "1") {
+                        star.html("<i class='fa fa-star '></i>");
+                    } else
+                        star.html("<i class='fa fa-star-o '></i>");
+                    refresh();
+                }
+            });
+        }
+
+        /**************side bar*****************/
+        $("[data-action=reload]")
+            .bind("click", refresh)
+            .hover(handlerIn, handlerOut);
+        function refresh() {
+            $(" #mySidenav").load("/Bookmark" + " #mySidenav" + ">*", function () {
+                $("[data-action=reload]")//spinner
+                    .bind("click", refresh)
+                    .hover(handlerIn, handlerOut);
+                //$("[data-action=bookmark]").unbind("click", bookmark).bind("click", bookmark);
+                $("[data-action=deleteBookmark]").bind("click", bookmark);
+            });
+        }
+
+        function handlerIn() {
+            $(this).html('<i class=" fa fa-refresh fa-spin" style="color:cornflowerblue;"></i>');
+        }
+
+        function handlerOut() {
+            $(this).html('<i class=" fa fa-refresh" ></i>');
+        }
+
+        reloadBySeconds();
+        function reloadBySeconds() {
+            var window_focus;
+            $(window).focus(function () {
+                window_focus = true;
+            }).blur(function () {
+                window_focus = false;
+            });
+            var interval;
+            //every 3s reload
+            $(document).bind('click', function () {
+                interval = window.setTimeout(function () {
+                    if (window_focus) {
+                        check();
+                    }
+                }, 3000);
+            });
+        }
+
+        function check() {
+            var w = document.getElementById("mySidenav").offsetWidth;
+            // if sidebar is opened
+            if (w == 220)
+                refresh();
+            var star = $('[data-action=bookmark]');
+            //if star does exist
+            if (star.length) {
+                $.ajax({
+                    type: "GET",
+                    url: "/" + "Bookmark/" + star.attr('data-bookmark-id'),
+                    data: '',
+                    cache: false,
+                    success: function (html) {
+                        var t = html == "1";
+                        if (html == "1") {
+                            star.html("<i class='fa fa-star '></i>");
+                        } else
+                            star.html("<i class='fa fa-star-o '></i>");
+
+                    }
+                });
+            }
+
+        }
+
         /********************************** validate ***********************************/
         var currentTime = new Date();
         var year = currentTime.getFullYear();
@@ -144,20 +254,20 @@ $(document).ready(function () {
                         range: jQuery.validator.format("Năm phải lớn hơn {0} và nhỏ hơn số năm hiện tại "),
                         required: "Bạn chưa điền đủ thông tin cho trường năm"
                     },
-                    Content : {
+                    Content: {
                         required: "Bạn chưa điền đủ thông tin cho các trường  "
                     },
                     Month: {
                         required: "Bạn chưa điền đủ thông tin cho trường tháng "
                     },
-                    name : {
-                        required: "Bạn chưa điền đủ thông tin cho trường tên kĩ năng ",
+                    name: {
+                        required: "Bạn chưa điền đủ thông tin cho trường tên kĩ năng "
                     },
-                    study_time : {
-                        required: "Bạn chưa điền đủ thông tin cho trường thời gian học  ",
+                    study_time: {
+                        required: "Bạn chưa điền đủ thông tin cho trường thời gian học  "
                     },
-                    work_time : {
-                        required: "Bạn chưa điền đủ thông tin cho trường thời gian làm việc ",
+                    work_time: {
+                        required: "Bạn chưa điền đủ thông tin cho trường thời gian làm việc "
                     }
                 },
                 errorElement: "div",
@@ -197,7 +307,7 @@ $(document).ready(function () {
             $(".jShow").show();
         });
 
-    function resetTable() {
+        function resetTable() {
             //prevent repeat binding or bind only local element
             $('[name=increase]')
                 .unbind("click", Add)
@@ -216,7 +326,6 @@ $(document).ready(function () {
             var url = $(this).attr('data-table');
             var cell = $(this).find("#cell_input_" + ID);
             var cellContent = $(this).children('#cell_' + ID);
-            var old = cell.val();
             cellContent.hide();
             cell.show();
             $(this).change(function () {
@@ -251,7 +360,7 @@ $(document).ready(function () {
             $(this).unbind("click", Add);
         }
 
-        function Save(e) {
+        function Save() {
 
             var tr_e = $(this).closest('tr');
             var url = tr_e.attr('newrow');
@@ -269,7 +378,7 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     url: "/" + url,
-                   data: dataString,
+                    data: dataString,
                     cache: false,
                     success: function (react) {
                         $(" #" + react).load(location.href + " #" + react + ">*", function () {
@@ -281,7 +390,7 @@ $(document).ready(function () {
         }
 
         function Delete() {
-            var tr_e = $(this).closest('tr'); //tr 
+            var tr_e = $(this).closest('tr'); //tr
             var ID = tr_e.attr('id');//record id
             var url = $(this).closest('td').prev().attr('data-table');
             $.ajax({
@@ -302,7 +411,7 @@ $(document).ready(function () {
         /**********************************End editable*********************************/
         $('[data-table=table-resume] input#table-search').bind("change blur", Search);
         function Search() {
-            //$('input#table-search').bind("blur", Search); 
+            //$('input#table-search').bind("blur", Search);
             var value = $(this).val();
             var dataString = 'keyword=' + value;
             $('input#table-search').off();
@@ -381,7 +490,7 @@ $(document).ready(function () {
          ******/
         $('[data-table=table-user] input#table-search').bind("change blur", Search1);
         function Search1() {
-            //$('input#table-search').bind("blur", Search); 
+            //$('input#table-search').bind("blur", Search);
             var value = $(this).val();
             var dataString = 'keyword=' + value;
             $('input#table-search').off();
@@ -428,48 +537,49 @@ $(document).ready(function () {
 
             }
         });
+
+
         /***************User profile**********************/
 
-        //dropzone handle 
-        $('#dropzone').on('dragover', function () {
-            $(this).addClass('hover');
-        });
+        //dropzone handle
+        $('#dropzone')
+            .on('dragover', function () {
+                $(this).addClass('hover');
+            })
+            .on('dragleave', function () {
+                $(this).removeClass('hover');
+            })
+            .find('input')
+            .on('change', function (e) {
+                var file = this.files[0];
+                $('#dropzone').removeClass('hover');
+                //validation
+                if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
+                    return alert('File type not allowed.');
+                }
+                //noinspection JSUnusedLocalSymbols
+                var size = file.size;
+                //TODO: check image size
+                //end validation
+                $('#dropzone')
+                    .addClass('dropped')
+                    .find('img')
+                    .remove();
+                if ((/^image\/(gif|png|jpeg|jpg)$/i).test(file.type)) {
+                    var reader = new FileReader(file);
 
-        $('#dropzone').on('dragleave', function () {
-            $(this).removeClass('hover');
-        });
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                        var data = e.target.result,
+                            $img = $('<img />').attr('src', data).fadeIn();
+                        $('#dropzone').find('.fixed-img').html($img);
+                    };
 
-        $('#dropzone input').on('change', function (e) {
-            var file = this.files[0];
-
-            $('#dropzone').removeClass('hover');
-            //validation 
-            if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
-                return alert('File type not allowed.');
-            }
-            var size = file.size;
-
-            //end validation 
-            $('#dropzone').addClass('dropped');
-            $('#dropzone img').remove();
-
-            if ((/^image\/(gif|png|jpeg|jpg)$/i).test(file.type)) {
-                var reader = new FileReader(file);
-
-                reader.readAsDataURL(file);
-                reader.onload = function (e) {
-                    var data = e.target.result,
-                        $img = $('<img />').attr('src', data).fadeIn();
-
-                    $('#dropzone').find('div').html($img);
-                };
-
-            } else {
-                var ext = file.name.split('.').pop();
-
-                $('#dropzone').find('div').html(ext);
-            }
-        });
+                } else {
+                    var ext = file.name.split('.').pop();
+                    $('#dropzone').find('.fixed-img').html(ext);
+                }
+            });
 
 
     }

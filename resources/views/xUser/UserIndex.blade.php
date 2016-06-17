@@ -37,10 +37,10 @@
             <table id="the_list">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th data-field="">#</th>
-                    <th data-field="name" style="width: 20%;"><a>Name</a></th>
-                    <th data-field="email" style="width: 25%;"><a>Email</a></th>
+                    <th style="width: 17%;"></th>
+                    <th style="width: 5%;">#</th>
+                    <th data-field="name" ><a>Name</a></th>
+                    <th data-field="email" style="width: 28%;"><a>Email</a></th>
                     <th style="width: 10%;">Type</th>
                     <th style="width: 10%;">&nbsp</th>
                 </tr>
@@ -57,12 +57,18 @@
                         <tr class="data">
                             <td class="image">
                                 <div style=" position: relative;height: 100px;width: 100px;">
-                                @if($row->image!="")
-                                    <img style="height: 100px; width: 100px;" src=<?php echo "/img/thumbnail/thumb_" . $row->image;?> >
-                                @else
-                                    <!--img style="height: 100px; width: 100px;"  src= "/img/no_image.gif"-->
-                                        <span class="dropzone-text">No image</span>
-                                @endif
+                                    @if($row->image!="")
+                                        <img style="height: 100px; width: 100px;"
+                                             src=<?php echo "/img/thumbnail/thumb_" . $row->image;?> >
+                                    @else
+                                        <div class="dropzone-text-place"
+                                             style="background-color:{{$row->getThemeColor()}} ">
+                                            <span class="dropzone-text letter-avatar"
+                                                  style="color: {{$row->getTextColor()}};">
+                                                {{substr(trim($row->name), 0, 1)}}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
                             </td>
                             <td class="rank">{{ $row->id }}</td>

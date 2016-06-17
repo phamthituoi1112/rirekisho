@@ -158,11 +158,11 @@ class UsersController extends Controller
             $file = $request->file('image');
             $timestamp = str_replace([' ', ':'], '-', Carbon::now()->toDateTimeString());
             $name = $timestamp . '-' . $file->getClientOriginalName();
-            $oldfile = public_path('img') . $user->image;
+            //$oldfile = public_path('img') . $user->image;
             $oldthumb = public_path('img/thumbnail') . 'thumb_' . $user->image;
-            if (File::exists($oldfile)) {
+            if (File::exists($oldthumb)) {
                 File::exists($oldthumb) && File::delete($oldthumb);
-                File::delete($oldfile);
+                //File::delete($oldfile);
             }
             /*resize*/
             $resizedImage = $this->resize($file, '200', $name);
@@ -171,7 +171,7 @@ class UsersController extends Controller
                     ->withError('Could not resize Image');
             }
             $user->image = $name;
-            $file->move(public_path() . '/img/', $name);
+            //$file->move(public_path() . '/img/', $name);
         }
         $user->update($request->except('image'));
         return redirect()->back()->withInput($request->all());

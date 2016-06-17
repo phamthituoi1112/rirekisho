@@ -2,6 +2,9 @@
 
 namespace app\Http\Controllers;
 
+use Auth;
+use Cache;
+use DB;
 use Illuminate\Http\Request;
 use View;
 use Gate;
@@ -18,9 +21,7 @@ class CVController extends Controller
     public function index(Request $request)
     {
         //TODO: sửa view
-        $CVs = CV::all();
-        $CVs = CV::paginate(10);
-
+        $CVs = CV::with('User')->paginate(10);
         return view('xCV.CVindex', compact('CVs'));
     }
 
@@ -43,17 +44,22 @@ class CVController extends Controller
     public function show($id)
     {
         //$id = $id - 14000;
-        $cv = CV::findOrFail($id);
-        if (Gate::denies('view-cv', $cv)) {
+        $CV = CV::with('User')->find($id);
+        if (Gate::denies('view-cv', $CV)) {
             abort(403);
         }
-        $skills = $cv->Skill;
-        $Records = $cv->Record;
+        $skills = $CV->Skill;
+        $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        $user = $cv->User;
-        $image = $user->image;
-        return View::make('xCV.CVshow')->with('CV', $cv)->with('Records', $Records)
-            ->with('skills', $skills)->with('image', $image );
+        $image = $CV->User->image;
+        $bookmark = DB::table('bookmarks')
+            ->whereUserId(Auth::User()->id)
+            ->whereBookmarkUserId($CV->user_id)->first();
+        if ($bookmark === null) $bookmark = 0;
+        else $bookmark = $bookmark->id;
+        return View::make('xCV.CVshow')
+            ->with(compact('CV', 'Records', 'skills', 'image', 'bookmark'));
+
     }
 
     public function show2($id)
@@ -67,6 +73,7 @@ class CVController extends Controller
         $Records = $Records->sortBy("Date");
         return View::make('xCV.CVview')->with('CV', $cv)->with('Records', $Records);
     }
+
     public function edit($id)//Get
     {
         //$id = $id - 14000;
@@ -95,7 +102,7 @@ class CVController extends Controller
 
     public function getPDF($id, Request $request)
     {
-        //TODO: dompdf in Japanese
+
         $CV = CV::findOrFail($id);
         if (Gate::denies('view-cv', $CV)) {
             abort(403);
@@ -114,10 +121,11 @@ class CVController extends Controller
             ->with('CV', $CV)->with('Records', $Records)->render();
         //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
-       $dompdf = PDF::loadHTML($html);
+        $dompdf = PDF::loadHTML($html);
 
         return $dompdf->stream("CV.pdf");
     }
+
     /**
      * Show the form for creating a new resource.
      *

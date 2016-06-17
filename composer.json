@@ -15,7 +15,8 @@
         "barryvdh/laravel-ide-helper": "^2.1",
         "nesbot/carbon": "^1.21",
         "barryvdh/laravel-debugbar": "^2.2",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "hashids/hashids": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

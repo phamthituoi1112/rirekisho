@@ -37,6 +37,7 @@ return array(
     'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'Intervention\\Image\\' => array($vendorDir . '/intervention/image/src/Intervention/Image'),
     'Illuminate\\' => array($vendorDir . '/laravel/framework/src/Illuminate'),
+    'Hashids\\' => array($vendorDir . '/hashids/hashids/lib/Hashids'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GeneaLabs\\LaravelCaffeine\\' => array($vendorDir . '/genealabs/laravel-caffeine/src'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),

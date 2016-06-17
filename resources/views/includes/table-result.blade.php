@@ -1,7 +1,8 @@
-@if(!$CVs->count())
+<?php $count = $CVs->count();?>
+@if(!$count)
     <tr class="no-record">
         <td colspan="6">
-            <center>There are no records to display</center>
+            <div style="text-align: center;">There are no records to display</div>
         </td>
     </tr>
 @else
@@ -18,8 +19,13 @@
                         <img style="height: 100px; width: 100px;"
                              src=<?php echo "/img/thumbnail/thumb_" . $image;?> >
                     @else
-                    <!--img style="height: 100px; width: 100px;"  src= "/img/no_image.gif"-->
-                        <span class="dropzone-text">No image</span>
+                        <div class="dropzone-text-place"
+                             style="background-color:{{$CV->User->getThemeColor()}} ">
+                            <span class="dropzone-text letter-avatar"
+                                  style="color: {{$CV->User->getTextColor()}};">
+                                {{substr(trim($CV->name), 0, 1)}}
+                            </span>
+                        </div>
                     @endif
                 </div>
             </td>
@@ -35,6 +41,6 @@
         </tr>
     @endforeach
     <tr id="number-result" style="display: none;">
-        <td colspan="6">Có {{$CVs->count() }} kết quả</td>
+        <td colspan="6">Có {{$count }} kết quả</td>
     </tr>
 @endif

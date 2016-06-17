@@ -4,6 +4,7 @@
 @section('content')
     <?php $key = $user->id;?>
     <form action="/User/{{$key}}" method="post" class="my-forms" id="profile-forms" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <fieldset id="field-box">
             <div class=" float_left" style="width: 30%;">
                 @include('xUser.profile')

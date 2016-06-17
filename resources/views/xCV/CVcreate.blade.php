@@ -4,6 +4,7 @@
     <!--div  class="page-title"><h3>Tạo CV mới</h3></div-->
     <?php $key = $CV->id;?>
     <form action="" method="post" class="my-forms" id="cv-forms">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <fieldset id="field-box">
             <label slide-header=true>
                 <div class="slide-header"> I. Thông tin cá nhân</div>

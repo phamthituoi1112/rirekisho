@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
     //admin only
     Route::get('User/search', 'UsersController@search');
     Route::resource('User', 'UsersController',['except' => ['create']]);
+    Route::resource('Bookmark', 'BookmarkController',['except' => ['update']]);
     Route::resource('Record', 'RecordController');
     Route::resource('Skill', 'SkillController');
 });

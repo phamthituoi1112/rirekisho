@@ -44,6 +44,7 @@ class CV extends Model
     {
         return $this->hasMany('App\Skill', 'cv_id');
     }
+    
 
     /************************** scope ********************************************/
     //unused
