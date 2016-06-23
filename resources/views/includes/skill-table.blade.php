@@ -16,7 +16,7 @@ if (!empty($field)) {
 @else
     <?php $i = 0;?>
     @foreach ($Lang as $Record)
-        <?php $r_id = $Record->id; ?>
+        <?php $r_id = $Record->hash; ?>
         <tr id="{{$r_id}}">
             <td>{{++$i}}</td>
             <td name="edit" data-table="Skill">

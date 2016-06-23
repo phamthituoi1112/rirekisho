@@ -2,12 +2,37 @@
 <title>Tạo CV</title>
 @section('content')
     <!--div  class="page-title"><h3>Tạo CV mới</h3></div-->
-    <?php $key = $CV->id;?>
+    <?php $key = $CV->hash;?>
     <form action="" method="post" class="my-forms" id="cv-forms">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <fieldset id="field-box">
-            <label slide-header=true>
-                <div class="slide-header"> I. Thông tin cá nhân</div>
+            @can('Admin')
+            <ul>
+                <li style="">
+                    <span class="" id="">Note:  </span>
+                    <input class="" style="width: 90%;line-height: 28px;margin-top:10px;" id="{{$key}}" editable="Rirekisho" name="notes" value="{{$CV->notes}}">
+                    <span class="success-status" id="s_notes_{{$key}}" style="display:none;">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </span>
+                </li>
+            </ul>
+            @endcan
+            <label slide-header=true class="slide-header">
+                I. Thông tin cá nhân
+                @can('Admin')
+                    <div class=" float_right">
+                        Active &nbsp &nbsp
+                        <input type="checkbox" class="ios-switch tinyswitch purple" id="{{$key}}"
+                               name="Active" editable="Rirekisho"
+                               @if ($CV->Active)
+                               checked
+                                @endif
+                        />
+                        <div class="float_right">
+                            <div></div>
+                        </div>
+                    </div>
+                @endcan
             </label>
             <ul slide-toggle=true>
 
@@ -201,9 +226,8 @@
             <ul slide-toggle=true>
                 @include('xCV.CVedit2')
             </ul>
-            <label slide-header=true>
-                <div class="slide-header"> III. Kĩ năng ứng viên</div>
-                <br>
+            <label slide-header=true class="slide-header">
+                III. Kĩ năng ứng viên
             </label>
             <ul slide-toggle=true>
                 <li>
@@ -258,7 +282,7 @@
                         </tr>
                         <tr class="">
                             <th style="width:5%;"> #</th>
-                            <th>Tên Framework đã sử dụng </th>
+                            <th>Tên Framework đã sử dụng</th>
                             <th style="width:15%;">Thời gian tự học</th>
                             <th style="width:15%;">Thời gian làm việc</th>
                             <th style="width:7%;">&nbsp;</th>
@@ -271,8 +295,64 @@
                 </li>
 
             </ul>
+            <label slide-header=true class="slide-header">
+                IV. Link đến profile hoặc project đã làm
+            </label>
+            <ul slide-toggle=true>
+                <li class="">
+                    <div class="float_left" style="width: 10%;">
+                        <label for="name" class="label">Github </label>
+                    </div>
+                    <div class="float_left" style="width: 80%;">
+                        <div class="input">
+                            <label class="icon-left" for="text">
+                                <i class="fa fa-github-square"></i>
+                            </label><!--change editable="Rirekisho" name=field_name  -->
+                            <input id="{{$key}}" editable="Rirekisho" style="width: 90%;"
+                                   name="github" type="text"
+                                   class=" float_left input-left " placeholder="URL" value="{{$CV->github}}">
+                            <!-- s_field_name_$key-->
+                            <div class="success-status float_left" id="s_github_{{$key}}" style="display:none;">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </div>
+                            <div class="clear-fix"></div>
+                            <div class="error-box error-text float_left">
+                                <span id="github-error"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+                <li class="">
+                    <div class="float_left" style="width: 10%;">
+                        <label for="name" class="label">LinkedIn </label>
+                    </div>
+                    <div class="float_left" style="width: 80%;">
+                        <div class="input">
+                            <label class="icon-left" for="text">
+                                <i class="fa fa-linkedin"></i>
+                            </label>
+                            <!--change editable="Rirekisho" name=field_name  -->
+                            <input id="{{$key}}" editable="Rirekisho" style="width: 90%;"
+                                   name="linkedin" type="text"
+                                   class=" float_left input-left " placeholder="URL" value="{{ $CV->linkedin}}">
+                            <!-- s_field_name_$key-->
+                            <div class="success-status float_left" id="s_linkedin_{{$key}}" style="display:none;">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </div>
+                            <div class="clear-fix"></div>
+                            <div class="error-box error-text float_left">
+                                <span id="linkedin-error"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </li>
+            </ul>
 
         </fieldset>
+
         <fieldset class="tbFooter">
         </fieldset>
 

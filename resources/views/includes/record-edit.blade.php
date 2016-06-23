@@ -16,7 +16,7 @@ if (!empty($field)) {
     <?php $i = 0;?>
     @foreach ($filtered as $Record)
 
-        <?php $r_id = $Record->id; ?>
+        <?php $r_id = $Record->hash ; ?>
         <tr id="{{$r_id}}">
             <td>{{++$i}}</td>
 

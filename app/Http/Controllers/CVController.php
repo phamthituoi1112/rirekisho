@@ -21,7 +21,7 @@ class CVController extends Controller
     public function index(Request $request)
     {
         //TODO: sửa view
-        $CVs = CV::with('User')->paginate(10);
+        $CVs = CV::with('User')->active()->paginate(10);
         return view('xCV.CVindex', compact('CVs'));
     }
 
@@ -65,13 +65,21 @@ class CVController extends Controller
     public function show2($id)
     {
         //$id = $id - 14000;
-        $cv = CV::findOrFail($id);
-        if (Gate::denies('view-cv', $cv)) {
+        $CV = CV::with('User')->find($id);
+        if (Gate::denies('view-cv', $CV)) {
             abort(403);
         }
-        $Records = $cv->Record;
+        $skills = $CV->Skill;
+        $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        return View::make('xCV.CVview')->with('CV', $cv)->with('Records', $Records);
+        $image = $CV->User->image;
+        $bookmark = DB::table('bookmarks')
+            ->whereUserId(Auth::User()->id)
+            ->whereBookmarkUserId($CV->user_id)->first();
+        if ($bookmark === null) $bookmark = 0;
+        else $bookmark = $bookmark->id;
+        return View::make('xCV.CVview')
+            ->with(compact('CV', 'Records', 'skills', 'image', 'bookmark'));
     }
 
     public function edit($id)//Get
@@ -109,19 +117,14 @@ class CVController extends Controller
         }
         $Records = $CV->Record;
         $Records = $Records->sortBy("Date");
-        /*
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Cache-Control: private', false);
-        header('Content-Encoding: UTF-8');
-        header('Content-type: application/pdf; charset=UTF-8');
-        setlocale(LC_ALL, 'ja_JP.UTF-8');
-        */
+
         $html = View::make('invoice.cv')
             ->with('CV', $CV)->with('Records', $Records)->render();
         //$html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
+
         $dompdf = PDF::loadHTML($html);
+        $dompdf->getDomPDF()->set_option('enable_font_subsetting', true);
 
         return $dompdf->stream("CV.pdf");
     }

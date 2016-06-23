@@ -1,8 +1,9 @@
 @extends('xCV.template')
-<title>Xem 1 </title>
+<title>Xem </title>
 @section('content')
 
-    <div class="display-box" style="">
+    <!--div class="display-box" style=""-->
+    <div class="p-box" style="height: 700px;">
         <div class="top-card " style="">
             <div class="profile">
                 <div class="profile-picture ">
@@ -22,12 +23,12 @@
                 <div class="clear-fix"></div>
                 <div class="profile-overview ">
 
-                    <ul class="profile-nav clickable">
+                    <ul class="profile-nav skippable">
                         <li class="title">
                             <h2> {{$CV->Last_name}} {{$CV->First_name}}</h2>
                             <h3>{{$CV->Furigana_name}}
                                 @can('Visitor')
-                                    <a data-action="bookmark" data-bookmark-id="{{$CV->user_id}}"
+                                    <a data-action="bookmark" data-bookmark-id="{{$CV->user->hash}}"
                                        style='color:#efa907;' title="Bookmark this user!">
                                         @if($bookmark)
                                             <i class="fa fa-star"></i>
@@ -41,7 +42,7 @@
                         </li>
 
                         <li class="p-link">
-                            <a class="" name="P-info">
+                            <a class="" href="#S-info">
                                 <i class="fa fa-user " id="p-active"></i>
                                 <div class="li-text">個人情報</div>
 
@@ -49,35 +50,35 @@
                         </li>
 
                         <li class="p-link">
-                            <a class="" name="P-school">
+                            <a class="" href="#S-school">
                                 <i class="fa fa-graduation-cap"></i>
                                 <div class="li-text">学歴・免許・資格</div>
 
                             </a>
                         </li>
                         <li class="p-link">
-                            <a name="P-work">
+                            <a href="#S-work">
                                 <i class="fa fa-history "></i>
                                 <div class="li-text">職歴</div>
 
                             </a>
                         </li>
                         <li class="p-link">
-                            <a class="" name="P-selfintro">
+                            <a class="" href="#S-selfintro">
                                 <i class="fa fa-file-text "></i>
                                 <div class="li-text">自己紹介・希望</div>
 
                             </a>
                         </li>
                         <li class="p-link">
-                            <a name="P-download">
+                            <a class="" href="#S-skill">
                                 <i class="fa fa-keyboard-o "></i>
                                 <div class="li-text">IT skill</div>
-
                             </a>
                         </li>
+
                         <li class="p-link">
-                            <a href="{{url('CV',[$CV->id,'getPDF'])}}" name="">
+                            <a href="{{url('CV',[$CV ,'getPDF'])}}" name="">
                                 <i class="fa fa-download "></i>
                                 <div class="li-text">Download CV</div>
 
@@ -98,9 +99,9 @@
 
             </div>
 
-            <div class="bd" id="P-info">
+            <div class="bd">
                 <ul>
-                    <li>
+                    <li id="S-info">
                         <table>
                             <tr>
                                 <th><h2>個人情報</h2></th>
@@ -122,7 +123,7 @@
                             </tr>
                         </table>
                     </li>
-                    <li>
+                    <li id="">
                         <table>
                             <tr>
                                 <th><h2>連絡情報</h2></th>
@@ -144,13 +145,7 @@
                             </tr>
                         </table>
                     </li>
-                </ul>
-            </div>
-
-
-            <div class="bd" id="P-school" style="display: none;">
-                <ul>
-                    <li>
+                    <li id="S-school">
                         <table>
                             <tr>
                                 <th><h2>学歴</h2></th>
@@ -161,12 +156,13 @@
                             });
                             ?>
                             @if(!$School->count())
-                                <tr class="no-record">
-                                    <td colspan="2">There are no records to display</td>
+                                <tr>
+                                    <th></th>
+                                    <td style="color: gray;">There are no records to display</td>
                                 </tr>
                             @else
                                 @foreach ($School as $Record)
-                                    <?php $r_id = $Record->id; ?>
+                                    <?php $r_id = $Record ; ?>
 
                                     <tr>
                                         <th><h4>{{$Record->Jdate}}</h4></th>
@@ -176,6 +172,7 @@
                             @endif
                         </table>
                     </li>
+
                     <li>
                         <?php
                         $Cert = $Records->filter(function ($item) {
@@ -195,7 +192,7 @@
                                 </tr>
                             @else
                                 @foreach ($Cert as $Record)
-                                    <?php $r_id = $Record->id; ?>
+                                    <?php $r_id = $Record ; ?>
 
                                     <tr>
                                         <th><h4>{{$Record->Jdate}}</h4></th>
@@ -205,11 +202,38 @@
                             @endif
                         </table>
                     </li>
-                </ul>
-            </div>
-            <div class="bd" id="P-selfintro" style="display: none;">
-                <ul>
-                    <li>
+                    <li id="S-work">
+                        <table>
+                            <tr>
+                                <th><h2>職歴</h2></th>
+                            </tr>
+
+                            <?php
+                            $Work = $Records->filter(function ($item) {
+                                return $item->getRole() == "Work";
+                            });
+                            ?>
+
+                            @if(!$Work ->count())
+                                <tr>
+                                    <th></th>
+                                    <td style="color: gray;">There are no records to display</td>
+                                </tr>
+                            @else
+                                @foreach ($Work as $Record)
+                                    <?php $r_id = $Record ; ?>
+
+                                    <tr>
+                                        <th><h4>{{$Record->Jdate}}</h4></th>
+                                        <td>{{$Record->Content}}  </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+
+                    </li>
+
+                    <li id="S-selfintro">
                         <table>
                             <tr>
                                 <th><h2>自己紹介</h2></th>
@@ -226,37 +250,82 @@
 
                         </table>
                     </li>
-                </ul>
-            </div>
-            <div class="bd" id="P-work" style="display: none;">
-
-                <?php
-                $Work = $Records->filter(function ($item) {
-                    return $item->getRole() == "Work";
-                });
-                ?>
-                <table>
-                    <tr>
-                        <th><h2>職歴</h2></th>
-                    </tr>
-
-
-                    @if(!$Work ->count())
-                        <tr>
-                            <th></th>
-                            <td style="color: gray;">There are no records to display</td>
-                        </tr>
-                    @else
-                        @foreach ($Work as $Record)
-                            <?php $r_id = $Record->id; ?>
-
+                    <li>
+                        <?php
+                        $Skill = $skills->filter(function ($item) {
+                            return $item->getRole() == "Language";
+                        });
+                        ?>
+                        <table>
                             <tr>
-                                <th><h4>{{$Record->Jdate}}</h4></th>
-                                <td>{{$Record->Content}}  </td>
+                                <th><h2>Language</h2></th>
                             </tr>
-                        @endforeach
-                    @endif
-                </table>
+                            @if(!$Skill ->count())
+                                <tr>
+                                    <th></th>
+                                    <td style="color: gray;">There are no records to display</td>
+                                </tr>
+                            @else
+                                @foreach ($Skill as $Record)
+                                    <tr>
+                                        <th><h4>{{$Record->name}}</h4></th>
+                                        <td>{{$Record->study_time}}  {{$Record->work_time}}  </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </li>
+                    <li id="S-skill">
+                        <table>
+                            <tr>
+                                <th colspan="2" ><h2 style="text-align: left;">Programing language</h2></th>
+                            </tr>
+                            <?php
+                            $Skill = $skills->filter(function ($item) {
+                                return $item->getRole() == "ProgLang";
+                            });
+                            ?>
+                            @if(!$Skill->count())
+                                <tr>
+                                    <th></th>
+                                    <td style="color: gray;">There are no records to display</td>
+                                </tr>
+                            @else
+                                @foreach ($Skill as $Record)
+                                    <tr>
+                                        <th><h4>{{$Record->name}}</h4></th>
+                                        <td>{{$Record->study_time}}  {{$Record->work_time}} </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </li>
+                    <li>
+                        <?php
+                        $Skill = $skills->filter(function ($item) {
+                            return $item->getRole() == "Framework";
+                        });
+                        ?>
+                        <table>
+                            <tr>
+                                <th><h2>Framework</h2></th>
+                            </tr>
+                            @if(!$Skill ->count())
+                                <tr>
+                                    <th></th>
+                                    <td style="color: gray;">There are no records to display</td>
+                                </tr>
+                            @else
+                                @foreach ($Skill as $Record)
+                                    <tr>
+                                        <th><h4>{{$Record->name}}</h4></th>
+                                        <td>{{$Record->study_time}}  {{$Record->work_time}}  </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </li>
+                </ul>
             </div>
 
         </div>

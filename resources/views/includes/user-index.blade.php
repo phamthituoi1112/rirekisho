@@ -5,6 +5,7 @@
         </td>
     </tr>
 @else
+    {!! $i =0 !!}
     @foreach ($users as $row)
         <tr class="data">
             <td class="image">
@@ -23,11 +24,11 @@
                     @endif
                 </div>
             </td>
-            <td class="rank">{{ $row->id }}</td>
-            <td class="name"><a href="{{url('User',$row->id)}} ">{{ $row->name }} </a></td>
+            <td class="rank">{{++$i}}</td>
+            <td class="name"><a href="{{url('User',$row->hash )}} ">{{ $row->name }} </a></td>
             <td class="name">{{ $row->email }}  </td>
             <td> {{ $row->getRole() }}</td>
-            <td><a href="{{url('User',[$row->id,'edit'])}}">Sửa</a></td>
+            <td><a href="{{url('User',[$row ,'edit'])}}">Sửa</a></td>
         </tr>
     @endforeach
     <tr id="number-result" style="display: none;">

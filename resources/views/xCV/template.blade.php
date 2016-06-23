@@ -35,26 +35,25 @@
 <body>
 <header>
     @include('includes.header')
-
     @include('includes.sidebar')
 </header>
-<br>
-<br>
 <div id="push">
     <div id="hamburger" class="burger-place">
         <a class="burger-effect burger-icon" href="#"><span></span></a>
     </div>
     <div class="container">
-        <div id="main push" class="row">
+        <div id="main" class="row">
             @yield('content')
 
         </div>
 
     </div>
-</div>
+
 <!--footer class="row simple">
     @include('includes.footer')
         </footer-->
+</div>
+
 </body>
 
 </html>

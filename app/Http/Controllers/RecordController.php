@@ -14,7 +14,8 @@ class RecordController extends Controller
 {
     public function store(Request $request)//post
     {
-        $CV = CV::findOrFail($request->input('id'));
+        $id = Hashids::decode($request->input('id'))[0];
+        $CV = CV::findOrFail($id);
         if (Gate::denies('update-cv', $CV->user_id)) {
             abort(403);
         }

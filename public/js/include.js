@@ -66,7 +66,7 @@ $(document).ready(function () {
             }
         });
         /***************Auto-submit*******************************/
-
+        //TODO: type=text
         $("[editable=Rirekisho]").click(function () {
 
             var key = $(this).attr('id');
@@ -77,9 +77,7 @@ $(document).ready(function () {
             var key = $(this).attr('id');
             var name = $(this).attr("name");
             var sucess_status = $("#s_" + name + "_" + key);
-            var value = $(this).val();
-            var dataString = name + '=' + value;
-            if (value.length > 0) {
+            if (validator.element($(this)))
                 $.ajax({
                     type: "PUT",
                     url: "/CV/" + key,
@@ -89,27 +87,37 @@ $(document).ready(function () {
                         sucess_status.show(20);
                     }
                 });
-            }
-            else {
-                alert('Enter something.');
-            }
 
         });
         /******************radio button********************/
         $('input[type=radio][editable=Rirekisho]').change(function () {
-            var key = $(this).attr('id');
             var name = $(this).attr("name");
             var dataString = name + '=' + this.value;
             $.ajax({
                 type: "PUT",
-                url: "/CV/" + key,
-                data: this.serialize(),
-                cache: false,
+                url: "/CV/" + $(this).attr('id'),
+                data: dataString,
                 success: function (html) {
-
                 }
             });
         });
+
+        $('input[type=checkbox][editable=Rirekisho]').change(switchInput);
+        function switchInput() {
+            var name = $(this).attr("name");
+            var active = 0;
+            if ($(this).is(":checked")) {
+                active = 1;
+            }
+            $.ajax({
+                type: "PUT",
+                url: "/CV/" + $(this).attr('id'),
+                data: name + "=" + active,
+                success: function (html) {
+                }
+            });
+        }
+
         /*****************show CV*************************/
         $(".clickable li.p-link a").on('click', function () {
             var name = $(this).attr('name');//gets element
@@ -133,8 +141,8 @@ $(document).ready(function () {
             };
             var star = $('[data-action=bookmark]');
             $.ajax({
-                type: "POST",
-                url: "/" + "Bookmark",
+                type: "PUT",
+                url: "/" + "Bookmark/" + $(this).attr('data-bookmark-id'),
                 data: $.param(data),
                 cache: false,
                 success: function (html) {
@@ -163,7 +171,7 @@ $(document).ready(function () {
         }
 
         function handlerIn() {
-            $(this).html('<i class=" fa fa-refresh fa-spin" style="color:cornflowerblue;"></i>');
+            $(this).html('<i class=" fa fa-refresh fa-spin" style="color:#659;"></i>');
         }
 
         function handlerOut() {
@@ -179,15 +187,33 @@ $(document).ready(function () {
                 window_focus = false;
             });
             var interval;
+            last = 0;
             //every 3s reload
-            $(document).bind('click', function () {
-                interval = window.setTimeout(function () {
+            $(document).on('click', function () {
+                var d = new Date();
+                var f = (d - last) / 1000;
+                if ((d - last) / 1000 > 3) {
                     if (window_focus) {
                         check();
+                        last = new Date();
                     }
-                }, 3000);
+                }
             });
+            /*
+             interval = window.setTimeout(function () {
+             if (window_focus) {
+             check();
+             }
+             }, 3000);*/
+            /*
+             $(document).on('click', function () {
+             if (window_focus) {
+             check();
+             }
+             });*/
+
         }
+
 
         function check() {
             var w = document.getElementById("mySidenav").offsetWidth;
@@ -201,7 +227,6 @@ $(document).ready(function () {
                     type: "GET",
                     url: "/" + "Bookmark/" + star.attr('data-bookmark-id'),
                     data: '',
-                    cache: false,
                     success: function (html) {
                         var t = html == "1";
                         if (html == "1") {
@@ -247,6 +272,12 @@ $(document).ready(function () {
                     },
                     name: {
                         required: true
+                    },
+                    github: {
+                        url: true
+                    },
+                    linkedin: {
+                        url: true
                     }
                 },
                 messages: {
@@ -275,12 +306,16 @@ $(document).ready(function () {
                     var react = element.closest('tbody').attr('data-response');
                     if (element.attr("name") == "Year" || element.attr("name") == "Month" || element.attr("name") == "Content" || element.attr("name") == "study_time" || element.attr("name") == "work_time" || element.attr("name") == "name") {
                         error.insertAfter("#" + react + "_0");
+                    } else if (element.attr("name") == "github" || element.attr("name") == "linkedin") {
+                        var name = element.attr('name');
+                        error.insertAfter("#" + name + "-error");
                     } else {
                         error.insertAfter(element);
                     }
                 }
             });
 
+        //noinspection SpellCheckingInspection
         jQuery.extend(jQuery.validator.messages, {
             required: "Bạn chưa điền đủ thông tin",
             remote: "Please fix this field.",

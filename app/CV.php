@@ -4,6 +4,7 @@ namespace app;
 
 use Illuminate\Database\Eloquent\Model;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class CV extends Model
@@ -26,6 +27,9 @@ class CV extends Model
         'Request',
         'positions',
         'notes',
+        'github',
+        'linkedin',
+        'Active'
     ];
 
     protected $appends = ['age'];
@@ -44,10 +48,9 @@ class CV extends Model
     {
         return $this->hasMany('App\Skill', 'cv_id');
     }
-    
+
 
     /************************** scope ********************************************/
-    //unused
     public function scopeActive($query)
     {
         return $query->where('active', 1);
@@ -132,4 +135,13 @@ class CV extends Model
             'users' => ['CV.user_id', 'users.id'],
         ],
     ];
+
+    public function getHashAttribute()
+    {
+        return Hashids::encode($this->getKey());
+    }
+    public function getRouteKey()
+    {
+        return Hashids::encode($this->getKey());
+    }
 }

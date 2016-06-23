@@ -10,6 +10,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Nicolaslopezj\Searchable\SearchableTrait;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -20,7 +21,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     'name', 'email', 'password', 'image',
     ];
     protected $hidden = [
-    'password', 'remember_token',
+    'password', 'remember_token','id'
     ];
 
     public function CV()
@@ -108,6 +109,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ];
         return $colours[$mod];
     }
-
+    public function getRouteKey()
+    {
+        return Hashids::encode($this->getKey());
+    }
+    public function getHashAttribute()
+    {
+        //return $this->getKey();
+        return Hashids::encode($this->getKey());
+    }
 
 }

@@ -49,10 +49,11 @@
                 @if(!$count)
                     <tr class="no-record">
                         <td colspan="5">
-                            <center>There are no records to display</center>
+                            <div style="text-align: center;">There are no records to display</div>
                         </td>
                     </tr>
                 @else
+                    <?php $i = 0;?>
                     @foreach ($users as $row)
                         <tr class="data">
                             <td class="image">
@@ -71,11 +72,11 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="rank">{{ $row->id }}</td>
-                            <td class="name"><a href="{{url('User',$row->id)}} ">{{ $row->name }} </a></td>
+                            <td class="rank">{{++$i}}</td>
+                            <td class="name"><a href="{{url('User',$row->hash)}} ">{{ $row->name }} </a></td>
                             <td class="name">{{ $row->email }}  </td>
                             <td> {{ $row->getRole() }}</td>
-                            <td><a href="{{url('User',[$row->id])}}">Sửa</a></td>
+                            <td><a href="{{url('User',[$row->hash ])}}">Sửa</a></td>
                         </tr>
                     @endforeach
                     <tr id="number-result" style="display: none;">

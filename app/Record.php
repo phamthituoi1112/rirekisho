@@ -32,5 +32,10 @@ class Record extends Model
                 $Role = "Cert";
             }        
         return $Role;
-    }          
+    }
+    public function getHashAttribute()
+    {
+        return $this->getKey();
+        //return Hashids::encode($this->getKey());
+    }
 }

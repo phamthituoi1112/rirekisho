@@ -13,10 +13,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Nicolaslopezj\Searchable\SearchableTrait;
 use Intervention\Image\Facades\Image;
+use Vinkla\Hashids\Facades\Hashids;
 
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+       // $this->middleware('decode');
+    }
+
     /**
      * @return mixed
      */
@@ -65,6 +71,7 @@ class UsersController extends Controller
 
     public function show($id)
     {
+        //$id = Hashids::decode($id)[0];
         $user = User::find($id);
         if (Gate::denies('profile', $id)) {
             abort(403);

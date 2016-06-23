@@ -60,20 +60,7 @@ class BookmarkController extends Controller
      */
     public function store(Request $request)//post
     {
-        if (Gate::denies('Visitor')) {
-            abort(403);
-        }
-        $user = Auth::User();
-        $bookmark = DB::table('bookmarks')
-            ->whereUserId($user->id)
-            ->whereBookmarkUserId($request->input('bookmark-id'))->first();
-        if ($bookmark === null) {
-            $user->Bookmark()->attach($request->input('bookmark-id'));
-            return 1;
-        } else {
-            $user->Bookmark()->detach($request->input('bookmark-id'));
-            return 0;
-        }
+
     }
 
     /**
@@ -98,16 +85,7 @@ class BookmarkController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -116,7 +94,31 @@ class BookmarkController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)//PUT
+    public function update($id)//PUT
+    {
+        if (Gate::denies('Visitor')) {
+            abort(403);
+        }
+        $bookmarkid = $id;
+        $user = Auth::User();
+        $bookmark = DB::table('bookmarks')
+            ->whereUserId($user->id)
+            ->whereBookmarkUserId($bookmarkid)->first();
+        if ($bookmark === null) {
+            $user->Bookmark()->attach($bookmarkid);
+            return 1;
+        } else {
+            $user->Bookmark()->detach($bookmarkid);
+            return 0;
+        }
+    }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }
