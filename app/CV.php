@@ -45,9 +45,9 @@ class CV extends Model
     {
         return $this->hasMany('App\Skill', 'cv_id');
     }
-    public function Position()
+    public function position()
     {
-        return $this->belongsTo('App\Positions', 'apply_to');
+        return $this->belongsTo('App\Positions', 'positions', 'id');
     }
     /************************** scope ********************************************/
         public function scopeActive($query)

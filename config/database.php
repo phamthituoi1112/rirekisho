@@ -55,8 +55,8 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'host' => 'localhost',
-            'database' => 'rirekisho',
-            'username' => 'root',
+            'database' => 'c9',
+            'username' => 'cunnhoyeuanh',
             'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',

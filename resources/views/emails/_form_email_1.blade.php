@@ -14,7 +14,8 @@
             <form method="post" action="{{ url('emails/sendEmail1') }}">
             <div class="form-group">        
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-
+                <input type="hidden" name="id" value="{{$id}}" />
+                <input type="hidden" name="type" value="{{$type}}" />
                 <div class="form-group">
                     <label for="recipient" class="label label-default">Recipient: </label>
                     <input name="recipient" class="form-control" type="email" placeholder="Recipient's email address" value="{{ $email }}"/>       
@@ -37,7 +38,6 @@
                 <input type="time" class="form-control" name="time" id="time"/><br>
                 Tai<br>
                 <input class="form-control" name="address"/><br>
-                Len abcxyz<br/>
             </div>
             <button class="btn btn-primary" name="sendMail">Send mail</button>
             </form>

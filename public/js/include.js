@@ -1,6 +1,6 @@
 $(document).ready(function () {
     
-    var url = '/rirekisho1/public/';
+    var url = '';
     
         /*************************fix navbar*************************************/
         var nav = $('.navbar');

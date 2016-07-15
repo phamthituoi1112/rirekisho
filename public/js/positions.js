@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var url = '/rirekisho1/public/';
+    var url = '';
 
     //display modal form for editing
     $('#pos-list').on('click', '.open-modal', function () {

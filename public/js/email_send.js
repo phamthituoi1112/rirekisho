@@ -1,15 +1,16 @@
 $(document).ready(function () {
     
-    var url = '/rirekisho1/public';
+    var url = '';
     $('.status').on('click', '.btn-send-email',function(){
     //$('.btn-send-email').click(function(){
-        //var id = $(this).children('#id').val();
+        var id = $(this).parent('.status').find('form.status').children('#id').val();
         var type = $(this).val();
         var email = $(this).prev('#email').val();
         
         data = {
             type: type,
-            email: email
+            email: email,
+            id: id
         };
         
         $.ajax({

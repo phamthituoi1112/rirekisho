@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var url = '/rirekisho1/public';
+    var url = '';
     
     $("#members").tagit({
         singleField: true,

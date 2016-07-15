@@ -93,17 +93,16 @@ class EmailsController extends Controller
             'subject' => 'required',
             'content' => 'required',
         ]);
-
         if (isset($request->attach[0])) {//if have attach file
             //upload file to server
             $files = $request->attach;
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
-                Storage::disk('local')->put($file->getFilename() . '.' . $extension, File::get($file));
                 $filename = $file->getFilename() . '.' . $extension;
-
-                $attachs[] = url('../storage/app') . '/' . $filename;
-                $filenames[] = $filename;
+                $file->move('public/',$filename);
+                // Storage::disk('local')->put($file->getFilename() . '.' . $extension, File::get($file));
+                // $filename = $file->getFilename() . '.' . $extension;
+                $attachs[] = public_path('public/').$filename;
             }
 
             //send email
@@ -111,15 +110,18 @@ class EmailsController extends Controller
                 $m->from(config('mail.username'), $request->sender)
                     ->subject($request->subject)
                     ->to($recipients);
-
-                for ($i = 0; $i < sizeOf($attachs); $i++) {
-                    $m->attach($attachs[$i]);
+                foreach( $attachs as $file ){
+                    $m->attach($file);
                 }
+                // for ($i = 0; $i < sizeOf($attachs); $i++) {
+                //     print_r($attachs[$i]);
+                //     $m->attach($attachs[$i]);
+                // }
             });
 
             //delete file
-            for ($i = 0; $i < sizeOf($filenames); $i++) {
-                Storage::disk('local')->delete($filenames[$i]);
+            foreach( $attachs as $file ){
+                unlink($file);
             }
 
             Session::flash('flash_message', 'Email has been sent.');
@@ -160,7 +162,7 @@ class EmailsController extends Controller
         if ($request->type != null) {
             $email = $request->email;
 
-            $data = array('email' => $email);
+            $data = array('email' => $email,'id'=>$request->id,'type'=>$request->type);
 
             return view('emails._form_email_1')->with($data);
         }
@@ -189,14 +191,19 @@ class EmailsController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'address' => $request->address,
+            'type' => $request->type,
+            'cv' => \App\CV::find($request->id)
         );
-
+        
+        //if status in this list
+        //if(in_array($request->type,[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]))
         Mail::send('emails._email_1', $data, function ($m) use ($request) {
             $m->from(config('mail.username'), $request->sender);
             $m->to($request->recipient)->subject($request->subject);
         });
 
-//        Session::flash('flash_message', 'Email has been sent.');
+        Session::flash('flash_message', 'Email has been sent.');
+        return redirect()->back();
     }
 
     /**
