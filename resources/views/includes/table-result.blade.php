@@ -35,7 +35,7 @@ $CVx = $CVs->reject(function ($item) {
             @include('includes._form_status',['CV' => $CV])
             <input type="hidden" value="{{ $CV->id }}" id="id"/>
             <input type="hidden" value="{{ $CV->User->email }}" id="email"/>
-            <button id="btn_send_email{{ $CV->id }}" class="btn btn-primary btn-send-email" value="{{ $CV->Status }}">Send Email {{ $CV->Status }}</button>
+            <button id="btn_send_email{{ $CV->id }}" class="btn btn-primary btn-send-email @if(!in_array($CV->Status,[1,2,4,5]) ){{'disabled'}}@endif" value="{{ $CV->Status }}">Send Email {{ $CV->Status }}</button>
         </div>
     </td>
     <td><a href="{{url('CV',[$CV->id,'edit'])}}">Sửa</a></td>

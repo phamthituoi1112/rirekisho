@@ -196,14 +196,15 @@ class EmailsController extends Controller
         );
         
         //if status in this list
-        //if(in_array($request->type,[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]))
+        //dang cho type  == 0' ko trong d/s day so
+        if(in_array($request->type,[1,2,4,5]))
         Mail::send('emails._email_1', $data, function ($m) use ($request) {
             $m->from(config('mail.username'), $request->sender);
             $m->to($request->recipient)->subject($request->subject);
         });
 
         Session::flash('flash_message', 'Email has been sent.');
-        return redirect()->back();
+        return redirect()->back(); 
     }
 
     /**

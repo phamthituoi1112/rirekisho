@@ -3,6 +3,7 @@ $(document).ready(function () {
     
     $('form.status').change(function () {
         var result = confirm("Want to change?");
+        var stt = $(this).children('select.status').val();
         if (result)
         {
             $.ajaxSetup({
@@ -14,7 +15,7 @@ $(document).ready(function () {
 
             var data = {
                 id: $(this).children('#id').val(),
-                status: $(this).children('select.status').val()
+                status: stt
             };
             $.ajax({
                 type: 'POST',
@@ -24,9 +25,17 @@ $(document).ready(function () {
                 success: function (data) {                    
                     $('#CV_status' + data.id).val(data.status);
                     var btn_send_email = '<button id="btn_send_email' + data.id;
-                    btn_send_email += '" class="btn btn-primary btn-send-email" value="';
-                    btn_send_email += data.status + '">Send Email ';
-                    btn_send_email += data.status + '</button>';
+                    if(stt!=1&&stt!=2&&stt!=4&&stt!=5){
+                        btn_send_email += '" class="btn btn-primary btn-send-email disabled" value="';
+                        btn_send_email += data.status + '">Send Email ';
+                        btn_send_email += data.status + '</button>';
+                    }
+                    else{
+                        btn_send_email += '" class="btn btn-primary btn-send-email" value="';
+                        btn_send_email += data.status + '">Send Email ';
+                        btn_send_email += data.status + '</button>';
+                    }
+                    
                     $('#btn_send_email' + data.id).replaceWith(btn_send_email);
                     alert('Success');
                 }
